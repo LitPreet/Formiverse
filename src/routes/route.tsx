@@ -8,7 +8,7 @@ import Dashboard from "@/dashboard/Dashboard";
 import Layout from "@/layout";
 import MainPage from "@/components/mainpage/MainPage";
 
-const FallbackLoader = () => <div>Loading...</div>; 
+const FallbackLoader = () => <div>Loading...</div>;
 
 const AllRoutes = () => {
   const routePath = useRoutePath();
@@ -16,10 +16,14 @@ const AllRoutes = () => {
     <Suspense fallback={<FallbackLoader />}>
       <BrowserRouter>
         <Routes>
+            {/* publuc route  */}
             <Route path={routePath.registerUser} element={<Register />} />
             <Route path={routePath.login} element={<Login />} />
-          <Route path={routePath.home} element={<Layout><Outlet /></Layout>}>
-          <Route index element={<MainPage />}/>
+
+          <Route path={routePath.home} element={<Layout />}>
+            <Route index element={<MainPage />} />
+            {/* private route  */}
+            {/* if you want role based auth then simply pass role as prop in protectedRoutre accordingly find and show unauthorized screen  */}
             <Route element={<ProtectedRoute />}>
               <Route path={routePath.dashboard} element={<Dashboard />} />
             </Route>

@@ -30,3 +30,18 @@ export const registerFormSchema = z.object({
       message: "Avatar must be an image file.",
     }),
 });
+
+export const loginFormSchema = z.object({
+  username: z
+    .string()
+    .min(2, { message: "name must be at least 2 characters." })
+    .max(30, { message: "Username must not exceed 30 characters." }),
+
+  email: z
+    .string()
+    .email({ message: "Invalid email address." }),
+
+  password: z
+    .string()
+    .min(1, { message: "Password is required." })
+});

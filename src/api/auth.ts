@@ -9,3 +9,12 @@ export const registerUser = async (data: FormData) => {
         throw new Error(err.message || 'An error occurred');
     }
 }
+
+export const loginUser = async (data: FormData) => {
+    try {
+        const res = await axios.post('/users/login', data);
+        return res.data;
+    } catch (err:any) {
+        throw new Error(err.message || 'An error occurred');
+    }
+}

@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useRoutePath } from "./routePath";
 import Layout from "@/layout"; // Path alias from tsconfig.json
 
 const ProtectedRoute = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const path = useRoutePath(); // Assuming this returns an object with your route paths
   const isAuthenticated = false; // Replace this with actual authentication logic
 
@@ -16,11 +17,9 @@ const ProtectedRoute = () => {
   }, [isAuthenticated, navigate, path]);
 
   return isAuthenticated ? (
-    <Layout>
-      <Outlet />
-    </Layout>
+    <Outlet />
   ) : (
-    <Navigate to={path.login} replace />
+    <Navigate to={path.login} state={{ from: location }} replace />
   );
 };
 
