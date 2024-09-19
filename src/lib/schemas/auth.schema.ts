@@ -24,11 +24,11 @@ export const registerFormSchema = z.object({
     .regex(/[A-Z]/, { message: "Password must include at least one uppercase letter." })
     .regex(/\d/, { message: "Password must include at least one number." })
     .regex(/[\W_]/, { message: "Password must include at least one special character." }),
-  avatar: z
-    .instanceof(File)
-    .refine((file) => file.type.startsWith("image/"), {
-      message: "Avatar must be an image file.",
-    }),
+  // avatar: z
+  //   .instanceof(File)
+  //   .refine((file) => file.type.startsWith("image/"), {
+  //     message: "Avatar must be an image file.",
+  //   }),
 });
 
 export const loginFormSchema = z.object({

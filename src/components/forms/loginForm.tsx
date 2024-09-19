@@ -16,6 +16,11 @@ import { loginFormSchema } from "@/lib/schemas/auth.schema";
 import { useMutation } from "react-query";
 import { loginUser } from "@/api/auth";
 import { useLocation, useNavigate } from "react-router-dom";
+import { LoginUser } from "@/lib/types/auth";
+import { useState } from "react";
+import { Eye,EyeOff } from "lucide-react";
+import { setCredentials } from "@/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
   const form = useForm<z.infer<typeof loginFormSchema>>({
@@ -26,27 +31,38 @@ const LoginForm = () => {
       password: "",
     },
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch()
   const from = location?.state?.from?.pathname || "/";
+
   const mutation = useMutation({
-    mutationFn: (data: FormData) => loginUser(data),
-    onSuccess: (data) => {
-      // Handle success, e.g., show a success message or redirect
-      console.log("Registration successful", data);
+    mutationFn: (data:LoginUser) => loginUser(data),
+    onSuccess: (data: any) => {
+      console.log("Registration successful",data);
+      const {accessToken, user} =data.data
+      const {username, email, fullName} = user
+      dispatch(setCredentials({ accessToken, user: {username, email, fullName} }));
       navigate(from, { replace: true });
+      localStorage.setItem('authenticated', 'true');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       // Handle error, e.g., show an error message
       console.error("Registration error", error);
     },
   });
 
   function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    const formData = new FormData();
-    formData.append("username", values.username);
-    formData.append("email", values.email);
-    formData.append("password", values.password);
+    const formData = {
+      username: values.username,
+      password: values.password,
+      email: values.email,
+    };
     mutation.mutate(formData);
   }
 
@@ -92,11 +108,21 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Enter your password"
-                  {...field}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    {...field}
+                    className="w-full"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleTogglePasswordVisibility}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                  >
+                    {showPassword ? <EyeOff /> : <Eye />}
+                  </button>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,9 +130,9 @@ const LoginForm = () => {
         />
 
         {/* Submit Button */}
-        <Button type="submit" disabled={mutation.isLoading}>{`${
-          true ? <Loading /> : "Submit"
-        }`}</Button>
+        <Button type="submit" disabled={mutation.isLoading}>
+          {mutation.isLoading ? <Loading /> : "Submit"}
+        </Button>
       </form>
     </Form>
   );
