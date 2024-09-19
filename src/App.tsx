@@ -15,13 +15,13 @@ function App() {
   });
   useEffect(() => {
     if(data){
-      const { username, email, avatar, fullName } = data;
+      const { username, email,  fullName } = data;
 
-      dispatch(setUser({ username, email, avatar, fullName }));
+      dispatch(setUser({ username, email,  fullName }));
     }
   },[data])
   return (
-    <div className="App">
+    <div className="App dark:bg-black">
       <AllRoutes /> 
     </div>
   );

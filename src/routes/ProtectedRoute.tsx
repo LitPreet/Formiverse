@@ -7,7 +7,7 @@ const ProtectedRoute = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const path = useRoutePath(); // Assuming this returns an object with your route paths
-  const isAuthenticated = false; // Replace this with actual authentication logic
+  const isAuthenticated = localStorage.getItem('authenticated'); // Replace this with actual authentication logic
 
   useEffect(() => {
     if (!isAuthenticated) {

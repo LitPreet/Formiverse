@@ -2,7 +2,6 @@ export interface RegisterUser{
     username:string;
     fullName:string;
     email: string;
-    avatar: File;
     password: string;
 }
 export interface LoginUser{
@@ -16,7 +15,6 @@ export interface User {
     username: string;
     email: string;
     fullName: string;
-    avatar: string;
     coverImage?: string; // Optional field
     watchHistory?: string[]; // Array of Video ObjectIds (or string if you use ObjectId as a string)
     createdAt?: string; // Optional if timestamps are included
