@@ -15,7 +15,7 @@ const Header = () => {
   const path = useRoutePath()
   const navigate = useNavigate()
   return (
-    <div className='z-10 relative flex bg-transparent p-5 justify-between items-center dark:text-white text-gray-600 relative'>
+    <div className='z-10 shadow-md flex bg-transparent p-3 justify-between items-center dark:text-white text-gray-600 relative dark:bg-gray-700'>
     <div className="flex items-center gap-2">
       <img src={Logo} className='w-10' alt='logo'/>
       <h1 className='text-xl dark:text-white text-gray-600'>Forms</h1>

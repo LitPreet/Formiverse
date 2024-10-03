@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useRoutePath } from "../hooks/useRoutePath";
-import Layout from "@/layout"; // Path alias from tsconfig.json
 
 const ProtectedRoute = () => {
   const navigate = useNavigate();

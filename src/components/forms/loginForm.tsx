@@ -21,6 +21,7 @@ import { useState } from "react";
 import { Eye,EyeOff } from "lucide-react";
 import { setCredentials } from "@/features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { useRoutePath } from "@/hooks/useRoutePath";
 
 const LoginForm = () => {
   const form = useForm<z.infer<typeof loginFormSchema>>({
@@ -37,6 +38,7 @@ const LoginForm = () => {
     setShowPassword(!showPassword);
   };
   const navigate = useNavigate();
+  const path = useRoutePath()
   const location = useLocation();
   const dispatch = useDispatch()
   const from = location?.state?.from?.pathname || "/";
@@ -134,6 +136,7 @@ const LoginForm = () => {
           {mutation.isLoading ? <Loading /> : "Submit"}
         </Button>
       </form>
+      <p className="text-sm mt-2">Don't have an account ?<span className="text-primary mx-1 cursor-pointer" onClick={() => navigate(path.registerUser)}>Sign up</span></p>
     </Form>
   );
 };

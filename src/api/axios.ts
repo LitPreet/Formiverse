@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { store } from '@/store/store'; // If needed for other Redux actions like refreshing user info
-import { setCredentials } from '@/features/auth/authSlice'; // Optional for managing user data in Redux if needed
+
 // import { useNavigate } from 'react-router-dom';
 export const axiosFormInstance = axios.create({
   baseURL: 'http://localhost:8000/api/v1/users', 

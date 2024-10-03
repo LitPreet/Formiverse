@@ -1,6 +1,6 @@
-import React, { Suspense } from "react";
+import  { Suspense } from "react";
 import { useRoutePath } from "../hooks/useRoutePath";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter,  Route, Routes } from "react-router-dom";
 import Login from "@/login/Login";
 import Register from "@/register/Register";
 import ProtectedRoute from "./ProtectedRoute";

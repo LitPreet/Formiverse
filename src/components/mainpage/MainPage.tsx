@@ -8,6 +8,7 @@ const MainPage = () => {
   const navigate = useNavigate();
   const path = useRoutePath()
   const theme = useTheme();
+  const isAuthenticated = localStorage.getItem('authenticated')
   return (
     <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-6 h-[100vh]">
      <div
@@ -35,22 +36,25 @@ const MainPage = () => {
             helping you gather insights in real-time. Smart, simple, and built
             for your needs.
           </p>
-          <div className="mt-16 flex flex-wrap justify-center gap-y-4 gap-x-6">
-            <div
-              className="relative flex h-11 w-full items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:bg-primary before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max"
-            >
-              <span className="relative text-base cursor-pointer font-semibold text-white" onClick={() => navigate(path.registerUser)}>
-                Get started
-              </span>
-            </div>
-            <div
-              className="relative flex h-11 w-full items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:border before:border-transparent before:bg-primary/10 before:bg-gradient-to-b before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 dark:before:border-gray-700 dark:before:bg-gray-800 sm:w-max"
-            >
-              <span className="relative text-base font-semibold text-primary dark:text-white">
-                Learn more
-              </span>
-            </div>
-          </div>
+          {
+            !isAuthenticated && ( <div className="mt-16 flex flex-wrap justify-center gap-y-4 gap-x-6">
+              <div
+                className="relative flex h-11 w-full items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:bg-primary before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max"
+              >
+                <span className="relative text-base cursor-pointer font-semibold text-white" onClick={() => navigate(path.registerUser)}>
+                  Get started
+                </span>
+              </div>
+              <div
+                className="relative flex h-11 w-full items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:border before:border-transparent before:bg-primary/10 before:bg-gradient-to-b before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 dark:before:border-gray-700 dark:before:bg-gray-800 sm:w-max"
+              >
+                <span className="relative text-base font-semibold text-primary dark:text-white">
+                  Learn more
+                </span>
+              </div>
+            </div>) 
+          }
+         
         </div>
       </div>
     </div>

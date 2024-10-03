@@ -2,8 +2,6 @@ import { LoginUser, OTP, RegisterUser, User } from "@/lib/types/auth"
 import { axiosInstance as axioss } from "./axios"
 import { axiosFormInstance } from "./axios"
 
-
-
 export const registerUser = async (data: FormData) => {
   console.log(data, "inside api")
   try {

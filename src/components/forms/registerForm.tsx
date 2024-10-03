@@ -18,7 +18,8 @@ import { Loading } from "../loader/Loader";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import OTPForm from "./OTPForm";
-import { RegisterUser } from "@/lib/types/auth";
+import { useNavigate } from "react-router-dom";
+import { useRoutePath } from "@/hooks/useRoutePath";
 
 export function RegisterForm() {
   const form = useForm<z.infer<typeof registerFormSchema>>({
@@ -30,16 +31,13 @@ export function RegisterForm() {
       password: "",
     },
   });
-
+   const navigate = useNavigate()
+   const path = useRoutePath()
   const mutation = useMutation({
     mutationFn: (data: FormData) => registerUser(data),
     onSuccess: (data) => {
       // Handle success, e.g., show a success message or redirect
       console.log("Registration successful", data);
-      // const { user } = data.data;
-      // const { email } = data;
-      // localStorage.setItem("email", email);
-      // // navigate(from, {replace:true})
       setShowOTPForm(!showOTPForm);
     },
     onError: (error) => {
@@ -56,8 +54,6 @@ export function RegisterForm() {
   };
 
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
-    console.log("Form Data:", values);
-  
     // Create a new FormData object
     const formData = new FormData();
   
@@ -66,12 +62,7 @@ export function RegisterForm() {
     formData.append('fullName', values.fullName);
     formData.append('email', values.email);
     formData.append('password', values.password);
-  
-    // Append the avatar file
-    // if (values.avatar) {
-    //   formData.append('avatar', values.avatar); // 'avatar' must match the key in your Multer config on the backend
-    // }
-  
+
     // Use your mutation function to send the FormData to your API
     try {
      const data =  await registerUser(formData); // The mutation function should handle FormData
@@ -82,20 +73,7 @@ export function RegisterForm() {
       console.error('Error registering user:', error);
     }
   }
-  
-  // function onSubmit (values: z.infer<typeof registerFormSchema>) {
-  //   console.log("Form Data:", values);
-  //   const formData = {
-  //     username: values.username,
-  //     password: values.password,
-  //     email: values.email,
-  //     avatar: values.avatar,
-  //     fullName: values.fullName,
-  //   };
-
-  //   // Use your mutation function to send the form data to your API
-  //    mutation.mutate(formData);
-  // }
+ 
   return showOTPForm ? (<OTPForm />) : (
     <Form {...form}>
       <h1 className="text-center font-bold text-xl">Register for free</h1>
@@ -147,35 +125,7 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-
-        {/* Avatar Field */}
-        {/* <FormField
-          control={form.control}
-          name="avatar"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Avatar</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    // If a file is selected, update the field value
-                    if (e.target.files?.[0]) {
-                      field.onChange(e.target.files[0]);
-                    } else {
-                      // Clear the field if no file is selected
-                      field.onChange(null);
-                    }
-                  }}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
-        {/* Password Field */}
+     {/* Password Field */}
         <FormField
           control={form.control}
           name="password"
@@ -209,6 +159,7 @@ export function RegisterForm() {
           {mutation.isLoading ? <Loading /> : "Submit"}
         </Button>
       </form>
+      <p className="text-sm mt-2">Already have an account ?<span className="text-primary mx-1 cursor-pointer" onClick={() => navigate(path.login)}>Sign in</span></p>
     </Form>
   );
 }
