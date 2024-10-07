@@ -76,7 +76,7 @@ export function RegisterForm() {
  
   return showOTPForm ? (<OTPForm />) : (
     <Form {...form}>
-      <h1 className="text-center font-bold text-xl">Register for free</h1>
+      <h1 className="text-center font-bold text-xl dark:text-white text-gray-700">Register for free</h1>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-2 relative"
@@ -89,7 +89,7 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>User Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your username" {...field} />
+                <Input className="border border-gray-400" placeholder="Enter your username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,7 +104,7 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your full name" {...field} />
+                <Input className="border border-gray-400" placeholder="Enter your full name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -119,7 +119,7 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="Enter your email" {...field} />
+                <Input type="email" className="border border-gray-400" placeholder="Enter your email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -138,7 +138,7 @@ export function RegisterForm() {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     {...field}
-                    className="w-full"
+                    className="w-full border border-gray-400"
                   />
                   <button
                     type="button"
@@ -159,7 +159,7 @@ export function RegisterForm() {
           {mutation.isLoading ? <Loading /> : "Submit"}
         </Button>
       </form>
-      <p className="text-sm mt-2">Already have an account ?<span className="text-primary mx-1 cursor-pointer" onClick={() => navigate(path.login)}>Sign in</span></p>
+      <p className="text-sm mt-2 dark:text-white text-gray-700">Already have an account ?<span className="text-primary mx-1 cursor-pointer" onClick={() => navigate(path.login)}>Sign in</span></p>
     </Form>
   );
 }

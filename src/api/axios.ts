@@ -39,13 +39,21 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true; // Prevents infinite retry loops
 
       try {
-        // Attempt to refresh the tokens by hitting your refresh token API
-         await axiosInstance.post('/refresh-token', {}, { withCredentials: true });
-        
-        // Retry the original request with the new token (no need to set manually as cookies will handle it)
+        const isAuthenticated = localStorage.getItem('authenticated') === 'true';
+        if (!isAuthenticated) {
+          // No active session, redirect to login or sign-up
+          window.location.href = '/login'; // Or use navigate if using React Router
+          return Promise.reject(error); // Stop further attempts
+        }
+
+        // If the session is active, attempt token refresh
+        await axiosInstance.post('/refresh-token', {}, { withCredentials: true });
+
+        // Retry the original request after token refresh
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         console.error('Token refresh failed:', refreshError);
+        localStorage.setItem('authenticated', 'false');
         // navigate('/login')
         return Promise.reject(refreshError); // If refresh fails, reject the promise
       }

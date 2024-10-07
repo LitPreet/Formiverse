@@ -70,7 +70,7 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <h1 className="text-center font-bold text-xl">Login for free</h1>
+      <h1 className="text-center font-bold text-xl dark:text-white text-gray-700">Login for free</h1>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         {/* Username Field */}
         <FormField
@@ -80,7 +80,7 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>User Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your username" {...field} />
+                <Input className="border border-gray-400" placeholder="Enter your username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,7 +95,7 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="Enter your email" {...field} />
+                <Input type="email" className="border border-gray-400" placeholder="Enter your email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -112,10 +112,10 @@ const LoginForm = () => {
               <FormControl>
                 <div className="relative">
                   <Input
+                  className="border border-gray-400 w-full"
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     {...field}
-                    className="w-full"
                   />
                   <button
                     type="button"
@@ -136,7 +136,7 @@ const LoginForm = () => {
           {mutation.isLoading ? <Loading /> : "Submit"}
         </Button>
       </form>
-      <p className="text-sm mt-2">Don't have an account ?<span className="text-primary mx-1 cursor-pointer" onClick={() => navigate(path.registerUser)}>Sign up</span></p>
+      <p className="text-sm mt-2 dark:text-white text-gray-700">Don't have an account ?<span className="text-primary mx-1 cursor-pointer" onClick={() => navigate(path.registerUser)}>Sign up</span></p>
     </Form>
   );
 };

@@ -20,6 +20,19 @@ function App() {
       dispatch(setUser({ username, email,  fullName }));
     }
   },[data])
+  
+  useEffect(() => {
+    // Function to run when the tab is closed or navigated away
+    const handleTabClose = (event: BeforeUnloadEvent) => {
+      localStorage.setItem('authenticated', 'false');
+    };
+
+    window.addEventListener('beforeunload', handleTabClose);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleTabClose);
+    };
+  }, []);
   return (
     <div className="App dark:bg-black">
       <AllRoutes /> 

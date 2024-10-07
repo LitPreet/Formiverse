@@ -21,9 +21,9 @@ const Header = () => {
       <h1 className='text-xl dark:text-white text-gray-600'>Forms</h1>
     </div>
     <div className="flex items-center gap-3">
+      <ModeToggle />
       {user ? (
         <>
-          <ModeToggle />
           <div style={{ position: 'relative', zIndex: 20 }}>
             <Profile user={user} />
           </div>

@@ -7,6 +7,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import Dashboard from "@/dashboard/Dashboard";
 import Layout from "@/layout";
 import MainPage from "@/components/mainpage/MainPage";
+import FormView from "@/formview/FormView";
+import FormSettings from "@/formview/components/FormSettings";
+import FormResponse from "@/formview/components/FormResponse";
 
 const FallbackLoader = () => <div>Loading...</div>;
 
@@ -26,6 +29,11 @@ const AllRoutes = () => {
             {/* if you want role based auth then simply pass role as prop in protectedRoutre accordingly find and show unauthorized screen  */}
             <Route element={<ProtectedRoute />}>
               <Route path={routePath.dashboard} element={<Dashboard />} />
+               {/* Dynamic form route */}
+               <Route path={routePath.form} element={<FormView />}>
+                    <Route path="responses" element={<FormResponse />} />
+                    <Route path="settings" element={<FormSettings />} />
+               </Route>
             </Route>
           </Route>
         </Routes>

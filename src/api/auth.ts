@@ -35,8 +35,55 @@ export const loginUser = async (data: { username: string, email: string; passwor
 export const getCurrentUser = async (): Promise<User | undefined> => {
   try {
     const response = await axioss.get('/current-user');
-    return response.data?.data
+    return response.data
   } catch (error) {
     console.error('error hai', error);
+  }
+};
+
+export const handleCreateForm = async () => {
+  try {
+    const response = await axioss.post('/create-form');
+    return response.data;
+  } catch (error) {
+    console.error("Error creating form:", error);
+  }
+};
+
+export const getFormById = async (formId:string) => {
+  const id = formId
+  try {
+    const response = await axioss.get(`/get-FormById/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating form:", error);
+  }
+};
+
+export const addQuestionToForm = async (formId:string,questionType:string) => {
+  try {
+    const data = {formId, questionType}
+    const response = await axioss.post(`/add-question`,data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating form:", error);
+  }
+};
+
+export const getAllForms = async () => {
+  try {
+    const response = await axioss.get(`/get-allForms`);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating form:", error);
+  }
+};
+
+export const deleteFormQuestion = async (questionId:string) => {
+  try {
+    const response = await axioss.delete(`/delete-question/${questionId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating form:", error);
   }
 };
