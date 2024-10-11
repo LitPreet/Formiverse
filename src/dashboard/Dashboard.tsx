@@ -1,5 +1,8 @@
 import { getAllForms, handleCreateForm } from "@/api/auth";
 import Plus from "@/assets/images/add.png";
+import Party from "@/assets/images/party-card.png";
+import Contact from "@/assets/images/contact-form.png";
+import Feedback from "@/assets/images/feedback.png";
 import Card from "@/components/cards/Card";
 import { ShimmerDashboard } from "@/components/loader/Shimmer";
 import SearchBar from "@/components/saerchBar";
@@ -9,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-
   const mutation = useMutation({
     mutationFn: handleCreateForm,
     onSuccess: (data: any) => {
@@ -23,41 +25,46 @@ const Dashboard = () => {
 
   const { data, error, isLoading, isError } = useQuery(
     ["getAllforms"], // `formId` as a dependency
-    async () => await getAllForms()
+    async () => await getAllForms(),{
+      retry: 2,
+    }
   );
   if (isError) return <div>Error loading data</div>;
  
   return (
     <div className="min-h-screen w-full dark:text-gray-200 text-gray-700 overflow-x-hidden">
-     {isLoading ? (<ShimmerDashboard />) : (<><div className="flex flex-col justify-center py-4 items-center w-full gap-1 bg-gray-300 dark:bg-black">
-        {/* <p className="text-center  md:text-start w-full  md:w-1/2 md:mr-9">start a new form</p> */}
+     {isLoading ? (<ShimmerDashboard />) : (<><div className="flex flex-col justify-center py-4 items-center w-full gap-1 bg-gray-200 dark:bg-black">
+
         <div className="px-4 flex justify-center snap-mandatory snap-x items-center w-full gap-9 overflow-x-auto scroll-pl-4 scroll-pr-4">
           <div className="flex flex-col items-center">
             <div
-              className="bg-gray-100 dark:bg-gray-200 flex justify-center items-center h-32 w-32 snap-center sm:w-36 sm:h-36 hover:border hover:border-primary"
-              onClick={() => mutation.mutate()}
+              className="bg-white dark:bg-gray-200 flex justify-center items-center h-32 w-32 snap-center sm:w-36 sm:h-36 hover:border hover:border-primary"
+              onClick={() => mutation.mutate('blank_form')}
             >
               <img src={Plus} alt="add" className="w-12 h-12" />
             </div>
             <p>Blank Form</p>
           </div>
           <div className="flex flex-col items-center">
-            <div className="bg-red-300 snap-center w-36 h-36 hover:border hover:border-primary">
-              1
+            <div className="bg-white dark:bg-gray-800 snap-center w-36 h-36 hover:border hover:border-primary flex items-center justify-center"
+              onClick={() => mutation.mutate('party_invite')}>
+              <img src={Party} alt="add" className="w-16 h-16" />
             </div>
             <p>Party Invite</p>
           </div>
           <div className="flex flex-col items-center">
-            <div className="bg-red-300 snap-center w-36 h-36 hover:border hover:border-primary">
-              1
+            <div className="bg-white dark:bg-gray-800 snap-center w-36 h-36 hover:border hover:border-primary flex items-center justify-center"
+             onClick={() => mutation.mutate('contact_form')}>
+               <img src={Contact} alt="add" className="w-16 h-16" />
             </div>
             <p>Contact Form</p>
           </div>
           <div className="flex flex-col items-center">
-            <div className="bg-red-300 snap-center w-36 h-36 hover:border hover:border-primary">
-              1
+            <div className="bg-white dark:bg-gray-800 snap-center w-36 h-36 hover:border hover:border-primary flex items-center justify-center"
+              onClick={() => mutation.mutate('feedback_form')}>
+               <img src={Feedback} alt="add" className="w-14 h-14" />
             </div>
-            <p>Work Request</p>
+            <p>Feedback Form</p>
           </div>
         </div>
       </div>

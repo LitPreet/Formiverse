@@ -5,37 +5,33 @@ import { useQuery } from "react-query";
 import { getCurrentUser } from "./api/auth";
 import { useEffect } from "react";
 import { setUser } from "./features/auth/authSlice";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
-  const dispatch = useDispatch()
-  const isAuthenticated = localStorage.getItem('authenticated') === 'true';
+  const dispatch = useDispatch();
+  const isAuthenticated = localStorage.getItem("authenticated") === "true";
   // console.log(user, token, "ju");
-  const { data, error, isLoading, isError } = useQuery(['currentUser'], getCurrentUser,{
-    enabled: isAuthenticated
-  });
-  useEffect(() => {
-    if(data){
-      const { username, email,  fullName } = data;
-
-      dispatch(setUser({ username, email,  fullName }));
+  const { data, error, isLoading, isError } = useQuery(
+    ["currentUser"],
+    getCurrentUser,
+    {
+      enabled: isAuthenticated, // Only fetch if authenticated
+      retry: 1, // Prevents retrying on failure
+      staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
     }
-  },[data])
-  
+  );
   useEffect(() => {
-    // Function to run when the tab is closed or navigated away
-    const handleTabClose = (event: BeforeUnloadEvent) => {
-      localStorage.setItem('authenticated', 'false');
-    };
+    if (data) {
+      const { username, email, fullName } = data;
+      console.log("unnj", { username, email, fullName });
+      dispatch(setUser({ username, email, fullName }));
+    }
+  }, [data]);
 
-    window.addEventListener('beforeunload', handleTabClose);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleTabClose);
-    };
-  }, []);
   return (
     <div className="App dark:bg-black">
-      <AllRoutes /> 
+      <Toaster />
+      <AllRoutes />
     </div>
   );
 }

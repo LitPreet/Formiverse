@@ -2,6 +2,8 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect } from "react";
 import { NavLink, useLocation, useParams } from "react-router-dom";
 import FormEdit from "./components/FormEdit";
+import FormResponse from "./components/FormResponse";
+import FormSettings from "./components/FormSettings";
 
 const FormView = ({}) => {
   const { id } = useParams();
@@ -59,6 +61,8 @@ const FormView = ({}) => {
       </div>
 
       {location.pathname === `/form/${id}` && <div className="w-full flex justify-center my-6 md:my-4 "><FormEdit /></div>}
+      {location.pathname === `/form/${id}/responses` && <div className="w-full flex justify-center my-6 md:my-4 "><FormResponse /></div>}
+      {location.pathname === `/form/${id}/settings` && <div className="w-full flex justify-center my-6 md:my-4 "><FormSettings /></div>}
     </div>
   );
 };

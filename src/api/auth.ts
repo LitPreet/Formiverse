@@ -1,6 +1,7 @@
-import { LoginUser, OTP, RegisterUser, User } from "@/lib/types/auth"
-import { axiosInstance as axioss } from "./axios"
-import { axiosFormInstance } from "./axios"
+import { OTP, User } from "@/lib/types/auth"
+import { axiosForPublic, axiosInstance as axioss } from "./axios"
+import { Form } from "@/lib/types/Form"
+
 
 export const registerUser = async (data: FormData) => {
   console.log(data, "inside api")
@@ -35,15 +36,18 @@ export const loginUser = async (data: { username: string, email: string; passwor
 export const getCurrentUser = async (): Promise<User | undefined> => {
   try {
     const response = await axioss.get('/current-user');
-    return response.data
+    return response.data.data
   } catch (error) {
     console.error('error hai', error);
   }
 };
 
-export const handleCreateForm = async () => {
+export const handleCreateForm = async (formType:string) => {
+  const data = {
+    formType: formType,
+  }
   try {
-    const response = await axioss.post('/create-form');
+    const response = await axioss.post('/create-form',data);
     return response.data;
   } catch (error) {
     console.error("Error creating form:", error);
@@ -59,10 +63,19 @@ export const getFormById = async (formId:string) => {
     console.error("Error creating form:", error);
   }
 };
-
-export const addQuestionToForm = async (formId:string,questionType:string) => {
+export const getFormByIdForSubmit = async (formId:string) => {
+  const id = formId
   try {
-    const data = {formId, questionType}
+    const response = await axiosForPublic.get(`/submit-formView/${id}`);;
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetchinng form:", error);
+  }
+};
+
+export const addQuestionToForm = async (formId:string,questionType:string,answerType:string) => {
+  try {
+    const data = {formId, questionType,answerType}
     const response = await axioss.post(`/add-question`,data);
     return response.data;
   } catch (error) {
@@ -83,7 +96,39 @@ export const deleteFormQuestion = async (questionId:string) => {
   try {
     const response = await axioss.delete(`/delete-question/${questionId}`);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     console.error("Error creating form:", error);
+    throw new Error(error);
   }
 };
+
+export const SubmitFormBuild = async (formId:string,data:Form) => {
+  try {
+    const response = await axioss.put(`/update-form/${formId}`, data); // Adjust the URL as per your server config
+    return response.data;
+  } catch (error:any) {
+    console.error('Error creating form:',error);
+    throw new Error(error);
+  }
+};
+
+export const SubmitFormResponse = async (id:string,data:Form) => {
+  const formId = id;
+  try {
+    const response = await axiosForPublic.post(`/submission-form/${formId}`, data); // Adjust the URL as per your server config
+    return response.data;
+  } catch (error:any) {
+    throw new Error(error);
+  }
+};
+
+export const getFormSubmissionResponse = async (id:string) => {
+  const formId = id;
+  try {
+    const response = await axioss.get(`/get-FormResponse/${formId}`); 
+    return response.data;
+  } catch (error:any) {
+    throw new Error(error);
+  }
+};
+

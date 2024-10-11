@@ -15,9 +15,7 @@ createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-          <ToastProvider>
         <App />
-        </ToastProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </Provider>

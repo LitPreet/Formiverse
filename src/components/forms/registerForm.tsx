@@ -89,7 +89,7 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>User Name</FormLabel>
               <FormControl>
-                <Input className="border border-gray-400" placeholder="Enter your username" {...field} />
+                <Input className="border border-gray-400 text-black dark:text-gray-200" placeholder="Enter your username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,7 +104,7 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input className="border border-gray-400" placeholder="Enter your full name" {...field} />
+                <Input className="border border-gray-400 text-black dark:text-gray-200" placeholder="Enter your full name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -119,7 +119,7 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" className="border border-gray-400" placeholder="Enter your email" {...field} />
+                <Input type="email" className="border border-gray-400 text-black dark:text-gray-200" placeholder="Enter your email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -138,12 +138,12 @@ export function RegisterForm() {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     {...field}
-                    className="w-full border border-gray-400"
+                    className="w-full border border-gray-400 text-black dark:text-gray-200"
                   />
                   <button
                     type="button"
                     onClick={handleTogglePasswordVisibility}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-black dark:text-gray-200"
                   >
                     {showPassword ? <EyeOff /> : <Eye />}
                   </button>
