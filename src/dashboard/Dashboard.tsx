@@ -9,6 +9,7 @@ import SearchBar from "@/components/saerchBar";
 import { IForm } from "@/lib/types/Form";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -18,18 +19,86 @@ const Dashboard = () => {
       navigate(`/form/${data.data?.response?.formId}`);
     },
     onError: (error: any) => {
-      // Handle error, e.g., show an error message
       console.error("Registration error", error);
     },
   });
 
   const { data, error, isLoading, isError } = useQuery(
-    ["getAllforms"], // `formId` as a dependency
+    ["getAllforms"], 
     async () => await getAllForms(),
     {
       retry: 2,
     }
   );
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const formsPerPage = 6;
+
+  const filteredForms = data?.data?.filter((form: IForm) =>
+    form.heading.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
+
+  // Calculate pagination variables
+  const totalForms = filteredForms.length;
+  const totalPages = Math.ceil(totalForms / formsPerPage);
+  const startIndex = (currentPage - 1) * formsPerPage;
+  const endIndex = startIndex + formsPerPage;
+  const paginatedForms = filteredForms.slice(startIndex, endIndex);
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1); // Reset to first page on new search
+  };
+
+  const renderPagination = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`px-3 py-1 border ${
+            currentPage === i
+              ? "bg-purple-600 text-white"
+              : "bg-white text-gray-600"
+          } hover:bg-purple-700 hover:text-white`}
+        >
+          {i}
+        </button>
+      );
+    }
+    return (
+      <div className="flex justify-center items-center space-x-2 my-2">
+        {/* Prev Button */}
+        {currentPage !== 1 &&  <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-3 py-1 border bg-white text-gray-600 hover:bg-purple-700 hover:text-white"
+        >
+          Prev
+        </button>}
+        {/* Page Numbers */}
+        {pages}
+
+        {/* Next Button */}
+        {currentPage !== totalPages && <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-3 py-1 border bg-white text-gray-600 hover:bg-purple-700 hover:text-white"
+        >
+          Next
+        </button>}
+      
+      </div>
+    );
+  };
+    
   if (isError) return <div className="w-full h-screen flex items-center justify-center text-gray-600 dark:text-gray-200 text-xl">Error loading data</div>;
 
   return (
@@ -86,7 +155,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {data.data && data.data.length > 0 && <SearchBar />}
+          {data.data && data.data.length > 0 && <SearchBar onSearch={handleSearch}/>}
           <div className=" w-full flex flex-col items-center justify-center">
             <div className="w-[90%] sm:w-[80%] flex justify-center flex-col">
               <div className="flex justify-start items-center w-full">
@@ -94,9 +163,10 @@ const Dashboard = () => {
                   My Forms
                 </h3>
               </div>
-              {data.data && data.data.length > 0 ? (
+              {/* {data.data && data.data.length > 0 ? ( */}
+              {paginatedForms && paginatedForms.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full m-0 gap-7 my-4 px-2">
-                  {data.data.map((d: IForm, i: number) => (
+                  {paginatedForms.map((d: IForm, i: number) => (
                     <Card key={i} formData={d} />
                   ))}
                 </div>
@@ -124,15 +194,10 @@ const Dashboard = () => {
                       You haven't created any forms yet. Start by creating a new
                       form to gather responses and manage your data efficiently.
                     </p>
-                    {/* <button
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
-                onClick={() => navigate('/create-form')} // Add your route for form creation
-              >
-                Create New Form
-              </button> */}
                   </div>
                 </div>
               )}
+               {totalPages > 1 && renderPagination()}
             </div>
           </div>
         </>

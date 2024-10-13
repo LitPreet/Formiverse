@@ -1,6 +1,6 @@
 import { OTP, User } from "@/lib/types/auth"
 import { axiosForPublic, axiosInstance as axioss } from "./axios"
-import { Form } from "@/lib/types/Form"
+import { Form, MailFormUrl } from "@/lib/types/Form"
 
 
 export const registerUser = async (data: FormData) => {
@@ -159,3 +159,11 @@ export const deleteFormById = async (formId:string) => {
   }
 };
 
+export const sendFormLinkMail = async (data:MailFormUrl) => {
+  try {
+    const response = await axioss.post(`/send-formUrl`,data); 
+    return response.data.data;
+  } catch (error:any) {
+    throw new Error(error);
+  }
+};

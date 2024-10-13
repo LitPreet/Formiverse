@@ -202,7 +202,7 @@ const FormEdit = () => {
                     <input
                       type="text"
                       placeholder="form heading...."
-                      className="font-bold text-3xl my-3  border-b-2 border-b-gray-500 bg-transparent outline-none text-gray-600 dark:text-gray-100"
+                      className="font-bold text-xl  md:text-3xl my-3  border-b-2 border-b-gray-500 bg-transparent outline-none text-gray-600 dark:text-gray-100"
                       {...field}
                     />
                   )}
@@ -214,7 +214,7 @@ const FormEdit = () => {
                     <input
                       type="text"
                       placeholder="form description...."
-                      className="font-semibold text-xl  border-b-2 border-b-gray-500 bg-transparent outline-none text-gray-600 dark:text-gray-100"
+                      className="font-semibold text-sm md:text-xl  border-b-2 border-b-gray-500 bg-transparent outline-none text-gray-600 dark:text-gray-100"
                       {...field}
                     />
                   )}

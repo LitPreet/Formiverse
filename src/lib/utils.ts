@@ -11,3 +11,13 @@ export const getFirst25Words = (text:string) => {
   return words.length > 25 ? 
     (words.slice(0, 25).split(",").join(" ")+'...') : text
 };
+
+export function debounce(func: (...args: any[]) => void, delay: number) {
+  let timeoutId: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+}

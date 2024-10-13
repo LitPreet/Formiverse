@@ -23,3 +23,8 @@ export interface Form {
   description: string;
   questions: Question[];
 }
+
+export interface MailFormUrl{
+  url:string,
+  recipientEmail:string
+}
