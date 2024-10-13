@@ -1,8 +1,8 @@
-import { deleteResponseById, getFormSubmissionResponse, getQuestionById } from "@/api/auth";
+import { deleteResponseById, getFormSubmissionResponse } from "@/api/auth";
 import { toast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
 import { Trash, X } from "lucide-react";
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const FormResponse = () => {
   const { id } = useParams();
 
   const [selectedResponse, setSelectedResponse] = useState<any>(null);
-  const { data, error, isLoading, isError ,refetch} = useQuery(
+  const { data ,refetch} = useQuery(
     ["getFormResponseById", id], // `formId` as a dependency
     async () => await getFormSubmissionResponse(id!),
     {
@@ -27,7 +27,7 @@ const FormResponse = () => {
     }) => {
       return await deleteResponseById(formId);
     },
-    onSuccess: (data: any) => {
+    onSuccess: () => {
       refetch()
       toast({
         variant: "default",
@@ -36,7 +36,7 @@ const FormResponse = () => {
       })
 
     },
-    onError: (error: any) => {
+    onError: () => {
       // Handle error, e.g., show an error message
       toast({
         variant: "destructive",

@@ -29,7 +29,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, formUrl }) => 
     ) => {
       return await sendFormLinkMail(data);
     },
-    onSuccess: (data: any) => {
+    onSuccess: () => {
         setEmail('');
         setError('')
       toast({
@@ -39,7 +39,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, formUrl }) => 
       })
 
     },
-    onError: (error: any) => {
+    onError: () => {
       // Handle error, e.g., show an error message
       toast({
         variant: "destructive",

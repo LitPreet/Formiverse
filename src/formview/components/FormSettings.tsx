@@ -1,7 +1,7 @@
 import { deleteFormById } from '@/api/auth';
 import { toast } from '@/hooks/use-toast';
 import { useRoutePath } from '@/hooks/useRoutePath';
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ const FormSettings = () => {
     }) => {
       return await deleteFormById(formId);
     },
-    onSuccess: (data: any) => {
+    onSuccess: () => {
       navigate(path.dashboard)
       toast({
         variant: "default",
@@ -30,7 +30,7 @@ const FormSettings = () => {
       })
 
     },
-    onError: (error: any) => {
+    onError: () => {
       // Handle error, e.g., show an error message
       toast({
         variant: "destructive",

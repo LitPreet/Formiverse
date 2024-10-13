@@ -11,7 +11,7 @@ function App() {
   const dispatch = useDispatch();
   const isAuthenticated = localStorage.getItem("authenticated") === "true";
   // console.log(user, token, "ju");
-  const { data, error, isLoading, isError } = useQuery(
+  const { data } = useQuery(
     ["currentUser"],
     getCurrentUser,
     {

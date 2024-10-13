@@ -77,7 +77,6 @@ const FormEdit = () => {
   });
 
   const {
-    formState: { errors },
     setValue,
   } = form;
 
@@ -91,7 +90,7 @@ const FormEdit = () => {
     }) => {
       return await SubmitFormBuild(formId, formEditData);
     },
-    onSuccess: (data: any) => {
+    onSuccess: () => {
       toast({
         variant: "default",
         className:"text-black dark:text-white",

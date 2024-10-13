@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Button } from '../ui/button'
 import { ModeToggle } from '../toggle-theme/toggle-theme'
 import Logo from '@/assets/images/formLogo.png'
