@@ -23,7 +23,7 @@ const OTPForm = () => {
       // Handle success, e.g., show a success message or redirect
       console.log("verification successful", data);
       const { accessToken, user } = data.data;
-      const { username, email, avatar, fullName } = user;
+      const { username, email, fullName } = user;
       dispatch(
         setCredentials({
           accessToken,
@@ -87,7 +87,7 @@ const OTPForm = () => {
       </p>
       <form onSubmit={handleSubmit} className="space-y-5 flex flex-col">
         <div className="flex">
-          {otp.map((t: string, i: number) => {
+          {otp.map((_, i: number) => {
             return (
               <input
                 key={i}

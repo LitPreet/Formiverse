@@ -58,17 +58,12 @@ interface MCQQuestion {
 
 const McqQuest = ({
   questionData,
-  refetch,
-  formEditData,
-  setFormEditData,
   form,
   index,
   mutation,
-  questions,
   setQuestions,
 }: MCQQuestion) => {
   const {
-    control,
     setValue,
     formState: { errors },
   } = form;

@@ -1,9 +1,7 @@
-import { useMutation } from "react-query";
-import { toast } from "./use-toast";
 import { useState } from "react";
-import { deleteFormQuestion } from "@/api/auth";
 
-export const useQuestionActions = (refetch: any) => {
+
+export const useQuestionActions = () => {
     const [options, setOptions] = useState<string[]>([]);
   
    

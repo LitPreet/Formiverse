@@ -89,7 +89,7 @@ export const formSchema = z.object({
             path: [`questions`, questionIndex],// Use a general path for this error
           });
         }
-        options && options.forEach((option, emptyOptionIndex) => {
+        options && options.forEach((option) => {
           if (option.trim().length === 0) {
             // Collect error for empty options
             errors.push({

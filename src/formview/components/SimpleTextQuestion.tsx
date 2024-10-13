@@ -50,7 +50,6 @@ setQuestions: React.Dispatch<React.SetStateAction<Question[]>>
 
 const SimpleTextQuestion = ({
   questionData,
-  refetch,
   form,
   index,
   mutation,

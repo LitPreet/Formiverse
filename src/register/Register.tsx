@@ -1,5 +1,4 @@
 import { RegisterForm } from "@/components/forms/registerForm";
-import React from "react";
 
 const Register = () => {
   return (
