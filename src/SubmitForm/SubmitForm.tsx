@@ -29,6 +29,7 @@ const SubmitForm = () => {
       return await SubmitFormResponse(id, data);
     },
     onSuccess: () => {
+      setFormSubmitted(true);
       toast({
         variant: "default",
         description: "Response Submitted successfully!",
@@ -44,7 +45,7 @@ const SubmitForm = () => {
   });
 
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
-  const [formSubmitted, setFormSubmitted] = useState(true);
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const { control, handleSubmit, setError, clearErrors } =
     useForm<SubmitFormValues>({
       defaultValues: {
@@ -52,6 +53,7 @@ const SubmitForm = () => {
           data?.questions.map((question: Question) => ({
             questionId: question._id,
             answer: "",
+            questionText: ""
           })) || [],
       },
     });
@@ -82,7 +84,8 @@ const SubmitForm = () => {
         answers: values.answers.map((ans, index) => ({
           question: ans.questionId,
           answer: ans.answer,
-          type: data.questions[index].answerType, // Use the question type from your data
+          type: data.questions[index].answerType,
+          questionText:data.questions[index].questionText,
         })),
       };
       responseMutation.mutate({
@@ -351,6 +354,12 @@ const SubmitForm = () => {
                       defaultValue={question._id}
                       render={({ field }) => <input type="hidden" {...field} />}
                     />
+                     {/* <Controller
+                      name={`answers.${index}.questionId`}
+                      control={control}
+                      defaultValue={question.questionText}
+                      render={({ field }) => <input type="hidden" {...field} />}
+                    /> */}
                     {validationErrors.includes(question._id) && (
                       <p className="text-red-500 text-sm">
                         This question is required
@@ -376,312 +385,3 @@ const SubmitForm = () => {
 };
 
 export default SubmitForm;
-
-// import React from "react";
-// import { useForm, Controller } from "react-hook-form";
-// import { useQuery } from "react-query";
-// import { useParams } from "react-router-dom";
-// import { z } from "zod";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { getFormByIdForSubmit } from "@/api/auth";
-// import { Textarea } from "@/components/ui/textarea";
-// import { Input } from "@/components/ui/input";
-// import { Button } from "@/components/ui/button";
-// import Footer from "@/components/footer/Footer";
-// import { Question } from "@/lib/types/Form";
-// import { Form } from "@/components/ui/form";
-
-// type SubmitFormValues = {
-//   answers: { questionId: string; answer?: string }[];
-// };
-
-// const SubmitForm = () => {
-//   const { id } = useParams();
-//   const { data, isLoading, error } = useQuery(
-//     ["getFormById", id],
-//     () => getFormByIdForSubmit(id!),
-//     { enabled: !!id }
-//   );
-
-//   const formSchema = z.object({
-//     answers: z.array(
-//       z
-//         .object({
-//           questionId: z.string(),
-//           answer: z.string().optional(),
-//         })
-//         .refine(
-//           (answer) => {
-//             const question =
-//               data &&
-//               data.questions.find(
-//                 (q: Question) => q._id === answer.questionId
-//               );
-//             return !(question?.required && !answer.answer);
-//           },
-//           {
-//             message: "This question is required",
-//             path: ['answer'],
-//           }
-//         )
-//     ),
-//   });
-
-//   const form = useForm<SubmitFormValues>({
-//     resolver: zodResolver(formSchema),
-//   });
-//   const {
-//     control,
-//     handleSubmit,
-//     formState: { errors },
-//   } = form
-
-//   const onSubmit = (values: SubmitFormValues) => {
-//     console.log(values)
-//     const formData = {
-//       formID: id,
-//       answers: values.answers.map((answer) => ({
-//         question: answer.questionId,
-//         answer: answer.answer,
-//       })),
-//     };
-//   };
-
-//   if (isLoading) return <div>Loading...</div>;
-//   if (error) return <div>Error loading form</div>;
-
-//   return (
-//     <div className="w-full relative flex justify-start flex-col gap-2 min-h-screen items-center">
-//       <div className="max-w-7xl w-full mb-2 flex justify-start flex-col gap-2 items-center">
-//         <div className="flex flex-col w-[90%] md:w-[50%] my-4 rounded-lg px-3 py-3 shadow-lg border border-gray-500 dark:border-gray-100">
-//           <h1 className="my-1 font-bold text-3xl text-center dark:text-gray-200 text-gray-800">
-//             {data && data.heading}
-//           </h1>
-//           <h3 className="my-0 text-xl dark:text-gray-200 text-center text-gray-600">
-//             {data && data.description}
-//           </h3>
-//         </div>
-//       </div>
-//       <form
-//         onSubmit={handleSubmit(onSubmit)}
-//         className="max-w-7xl w-full mb-5 flex justify-start flex-col gap-2 items-center"
-//       >
-//         {data?.questions.map((question: any, index: number) => (
-//           <div
-//             key={question._id}
-//             className="flex space-y-3 flex-col w-[90%] md:w-[50%] rounded-lg px-3 py-3 shadow-lg border border-gray-500 dark:border-gray-100"
-//           >
-//             <h2 className="text-xl font-semibold mb-2 dark:text-gray-100 text-gray-700 flex items-center gap-2">
-//               <span className="text-gray-500 flex items-center dark:text-gray-200">
-//                 {index + 1}
-//               </span>
-//               {question.questionText}
-//             </h2>
-
-//             {question.questionType === "paragraph" && (
-//               <Controller
-//                 name={`answers.${index}.answer`}
-//                 control={control}
-//                 defaultValue=""
-//                 render={({ field }) => (
-//                   <>
-//                     <Textarea
-//                       {...field}
-//                       placeholder="Enter your answer"
-//                       className="w-full border dark:border-gray-200 dark:text-gray-200 text-black"
-//                     />
-//                     {errors?.answers?.[index]?.answer && (
-//                       <p className="text-red-500 text-sm">
-//                         {errors.answers[index].answer.message}
-//                       </p>
-//                     )}
-//                   </>
-//                 )}
-//               />
-//             )}
-
-//             {question.questionType === "email" && (
-//               <Controller
-//                 name={`answers.${index}.answer`}
-//                 control={control}
-//                 defaultValue=""
-//                 render={({ field }) => (
-//                   <>
-//                     <Input
-//                       {...field}
-//                       type="email"
-//                       placeholder="Enter your email"
-//                       className="w-full border dark:border-gray-200 dark:text-gray-200 text-black"
-//                     />
-//                     {errors?.answers?.[index]?.answer && (
-//                       <p className="text-red-500 text-sm">
-//                         {errors.answers[index].answer.message}
-//                       </p>
-//                     )}
-//                   </>
-//                 )}
-//               />
-//             )}
-//             {question.questionType === "date" && (
-//               <Controller
-//                 name={`answers.${index}.answer`}
-//                 control={control}
-//                 defaultValue=""
-//                 render={({ field }) => (
-//                   <>
-//                     <Input
-//                       type="date"
-//                       {...field}
-//                       className="w-fit border dark:border-gray-200 dark:text-gray-200 text-black border-black"
-//                     />
-//                     {errors?.answers?.[index]?.answer && (
-//                       <p className="text-red-500 text-sm">
-//                         {errors.answers[index].answer.message}
-//                       </p>
-//                     )}
-//                   </>
-//                 )}
-//               />
-//             )}
-//             {question.questionType === "time" && (
-//               <Controller
-//                 name={`answers.${index}.answer`}
-//                 control={control}
-//                 defaultValue=""
-//                 render={({ field }) => (
-//                   <>
-//                     <Input
-//                       type="time"
-//                       {...field}
-//                       className="w-fit border dark:border-gray-200 dark:text-gray-200 text-black border-black"
-//                     />
-//                     {errors?.answers?.[index]?.answer && (
-//                       <p className="text-red-500 text-sm">
-//                         {errors.answers[index].answer.message}
-//                       </p>
-//                     )}
-//                   </>
-//                 )}
-//               />
-//             )}
-//             {question.questionType === "url" && (
-//               <Controller
-//                 name={`answers.${index}.answer`}
-//                 control={control}
-//                 defaultValue=""
-//                 render={({ field }) => (
-//                   <>
-//                     <Input
-//                       type="url"
-//                       {...field}
-//                       placeholder="Enter the URL..."
-//                       className="w-fit border dark:border-gray-200 dark:text-gray-200 text-black border-black"
-//                     />
-//                     {errors?.answers?.[index]?.answer && (
-//                       <p className="text-red-500 text-sm">
-//                         {errors.answers[index].answer.message}
-//                       </p>
-//                     )}
-//                   </>
-//                 )}
-//               />
-//             )}
-//             {question.questionType === "dropdown" && (
-//               <Controller
-//                 name={`answers.${index}.answer`}
-//                 control={control}
-//                 defaultValue=""
-//                 render={({ field }) => (
-//                   <>
-//                     <select
-//                       {...field}
-//                       className="my-2 border outline-none w-fit p-1 border-gray-300"
-//                     >
-//                       {question.options.map((option: string) => (
-//                         <option key={option} value={option}>
-//                           {option}
-//                         </option>
-//                       ))}
-//                     </select>
-//                     {errors?.answers?.[index]?.answer && (
-//                       <p className="text-red-500 text-sm">
-//                         {errors.answers[index].answer.message}
-//                       </p>
-//                     )}
-//                   </>
-//                 )}
-//               />
-//             )}
-
-//             {question.questionType === "checkbox" && (
-//               <Controller
-//                 name={`answers.${index}.answer`}
-//                 control={control}
-//                 render={({ field }) => (
-//                   <>
-//                     {question.options?.map((option: string) => (
-//                       <ul
-//                         key={option}
-//                         className="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-//                       >
-//                         <li className="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
-//                           <div className="flex items-center ps-3">
-//                             <input
-//                               id={`checkbox-${option}`}
-//                               checked={
-//                                 Array.isArray(field.value) &&
-//                                 field.value.includes(option)
-//                               }
-//                               onChange={(e) => {
-//                                 const checked = e.target.checked;
-//                                 if (!Array.isArray(field.value)) {
-//                                   console.error(
-//                                     "Expected field.value to be an array"
-//                                   );
-//                                   return;
-//                                 }
-//                                 const currentValue = field.value as string[];
-
-//                                 if (checked) {
-//                                   field.onChange([...currentValue, option]);
-//                                 } else {
-//                                   field.onChange(
-//                                     currentValue.filter((val) => val !== option)
-//                                   );
-//                                 }
-//                               }}
-//                               type="checkbox"
-//                               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-//                             />
-//                             <label
-//                               htmlFor={`checkbox-${option}`}
-//                               className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-//                             >
-//                               {option}
-//                             </label>
-//                           </div>
-//                         </li>
-//                       </ul>
-//                     ))}
-//                     {errors?.answers?.[index]?.answer && (
-//                       <p className="text-red-500 text-sm">
-//                         {errors.answers[index].answer.message}
-//                       </p>
-//                     )}
-//                   </>
-//                 )}
-//               />
-//             )}
-//           </div>
-//         ))}
-
-//         <Button type="submit" className="w-[90%] md:w-[50%] mb-3">
-//           Submit
-//         </Button>
-//       </form>
-//       <Footer />
-//     </div>
-//   );
-// };
-
-// export default SubmitForm;

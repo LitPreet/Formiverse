@@ -49,7 +49,6 @@ const FormEdit = () => {
     {
       enabled: !!id,
       onSuccess: (data) => {
-        // Initialize form values with fetched data
         const { description, heading, questions } = data.data;
         setQuestions(questions); // Set initial questions
         form.reset({

@@ -36,6 +36,7 @@ const MainPage = () => {
             helping you gather insights in real-time. Smart, simple, and built
             for your needs.
           </p>
+          {isAuthenticated === 'true' && <Button className="my-4" onClick={() => navigate(path.dashboard)}>Start Building</Button>}
           {
             isAuthenticated !== 'true' && ( <div className="mt-16 flex flex-wrap justify-center gap-y-4 gap-x-6">
               <div

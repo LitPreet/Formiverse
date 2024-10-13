@@ -14,7 +14,8 @@ export interface Question {
     heading: string;            
     description: string;        
     createdAt: string;          
-    questionsCount: number;     
+    questionsCount: number;   
+    submissionCount:number;  
 }
 
 export interface Form {

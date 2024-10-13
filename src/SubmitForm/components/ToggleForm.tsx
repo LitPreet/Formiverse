@@ -11,12 +11,12 @@ const ToggleForm = ({ handleSubmitAnotherResponse }: ToggleFormInterface) => {
     const path = useRoutePath()
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-screen">
-      <h2 className="text-2xl font-bold">Your response has been submitted!</h2>
+      <h2 className="text-2xl text-center font-bold">Your response has been submitted!</h2>
       <p>Would you like to submit another response?</p>
       <Button onClick={handleSubmitAnotherResponse} className="mt-4">
         Submit Another Response
       </Button>
-      <p className="mt-4 text-lg">
+      <p className="mt-4 text-lg text-center">
         Want to create new forms and share them?{" "}
         <span className="font-bold text-blue-600 cursor-pointer" onClick={() => navigate(path.home)}>
           Sign up to Forms!

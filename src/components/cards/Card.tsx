@@ -17,6 +17,7 @@ const Card = ({formData}:{formData:IForm}) => {
           setTimeout(() => setCopy(false), 2000); // Reset after 2 seconds
         });
       };
+    
   return (
     <div className="relative cursor-pointer dark:text-white h-60">
         <span className="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-primary rounded-lg dark:bg-gray-200"></span>
@@ -27,13 +28,13 @@ const Card = ({formData}:{formData:IForm}) => {
                 <h3 className="my-1 text-lg font-bold text-gray-800 dark:text-white"> {getFirst25Words(formData?.heading)}</h3>
             </div>
             <p className="text-gray-600 mb-2 dark:text-gray-300">
-                {formData.description}
+                {formData?.description || 'N/A'}
             </p>
             <p className="text-gray-600 dark:text-gray-300">
-                {formData.questionsCount} Questions
+                {formData?.questionsCount || '0'} Questions
             </p>
             <p className="text-gray-600 dark:text-gray-300">
-                0 Submissions
+                {formData?.submissionCount || '0'} Submissions
             </p>
             <p className="text-gray-600 dark:text-gray-300">
                 Created {timeAgo}

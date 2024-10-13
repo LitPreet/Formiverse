@@ -126,7 +126,34 @@ export const getFormSubmissionResponse = async (id:string) => {
   const formId = id;
   try {
     const response = await axioss.get(`/get-FormResponse/${formId}`); 
-    return response.data;
+    return response.data.data;
+  } catch (error:any) {
+    throw new Error(error);
+  }
+};
+
+export const getQuestionById = async (questionId:string) => {
+  try {
+    const response = await axioss.get(`/get-questionById/${questionId}`); 
+    return response.data.data;
+  } catch (error:any) {
+    throw new Error(error);
+  }
+};
+
+export const deleteResponseById = async (formId:string) => {
+  try {
+    const response = await axioss.delete(`/deletform-response/${formId}`); 
+    return response.data.data;
+  } catch (error:any) {
+    throw new Error(error);
+  }
+};
+
+export const deleteFormById = async (formId:string) => {
+  try {
+    const response = await axioss.delete(`/delete-form/${formId}`); 
+    return response.data.data;
   } catch (error:any) {
     throw new Error(error);
   }

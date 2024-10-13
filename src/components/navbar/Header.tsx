@@ -16,7 +16,7 @@ const Header = () => {
   const navigate = useNavigate()
   return (
     <div className='z-10 shadow-md flex bg-transparent p-3 justify-between items-center dark:text-white text-gray-600 relative dark:bg-gray-700'>
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate(path.home)}>
       <img src={Logo} className='w-10' alt='logo'/>
       <h1 className='text-xl dark:text-white text-gray-600'>Forms</h1>
     </div>

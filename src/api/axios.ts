@@ -22,6 +22,12 @@ export const axiosInstance = axios.create({
   withCredentials: true // Ensures cookies are sent with requests
 });
 
+
+const axiosRefreshInstance = axios.create({
+  baseURL: 'http://localhost:8000/api/v1/users',
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true // Ensures cookies are sent with requests
+});
 // Request interceptor (no need to set Authorization header as cookies handle it)
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -43,7 +49,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         // Attempt to refresh the token
-        const refreshResponse = await axiosInstance.post('/refresh-token', {}, { withCredentials: true });
+        const refreshResponse = await axiosRefreshInstance.post('/refresh-token', {}, { withCredentials: true });
         
         if (refreshResponse.status === 200) {
           // Retry the original request with the updated token
@@ -57,7 +63,6 @@ axiosInstance.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-console.log(error,'mai hu error')
     return Promise.reject(error); // If not 401 or token refresh fails, return the error
   }
 );
