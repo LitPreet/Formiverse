@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "./ui/button";
 import { debounce } from "@/lib/utils";
 
 const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {

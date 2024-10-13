@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { useRoutePath } from "@/hooks/useRoutePath";
@@ -42,7 +41,7 @@ const MainPage = () => {
               <div
                 className="relative flex h-11 w-full items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:bg-primary before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max" onClick={() => navigate(path.registerUser)}
               >
-                <span className="relative text-base cursor-pointer font-semibold text-white" >
+                <span className="relative text-base cursor-pointer font-semibold dark:text-black text-white" >
                   Get started
                 </span>
               </div>

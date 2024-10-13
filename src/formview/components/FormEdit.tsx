@@ -20,7 +20,7 @@ import {
 import { Text } from "lucide-react";
 import { useMutation, useQuery } from "react-query";
 import { addQuestionToForm, deleteFormQuestion, getFormById, SubmitFormBuild } from "@/api/auth";
-import { FormEncType, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { Loading } from "@/components/loader/Loader";
 import { useEffect, useState } from "react";
 import { ShimmerFormView } from "@/components/loader/Shimmer";
@@ -43,7 +43,7 @@ const FormEdit = () => {
   const [questions, setQuestions] = useState<Question[]>([]); // Local state for questions
   const { toast } = useToast()
 
-  const { data, error, isLoading, isError, refetch } = useQuery(
+  const { data,  isLoading,  refetch } = useQuery(
     ["getFormById", id], // `formId` as a dependency
     async () => await getFormById(id!),
     {

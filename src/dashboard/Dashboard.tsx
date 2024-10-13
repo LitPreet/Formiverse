@@ -23,7 +23,7 @@ const Dashboard = () => {
     },
   });
 
-  const { data, error, isLoading, isError } = useQuery(
+  const { data,  isLoading, isError } = useQuery(
     ["getAllforms"], 
     async () => await getAllForms(),
     {

@@ -1,32 +1,29 @@
 import axios from 'axios';
 
-// import { useNavigate } from 'react-router-dom';
+const baseURL = import.meta.env.VITE_LIVE_URL || import.meta.env.VITE_LOCAL_URL;
+
 export const axiosFormInstance = axios.create({
-  // baseURL: 'https://form-app-backend-one.vercel.app/api/v1/users', 
-  baseURL: 'http://localhost:8000/api/v1/users', 
+  baseURL: `${baseURL}/api/v1/users`, 
   headers: {
-    'Content-Type': 'multipart/form-data', // Axios will set this automatically, but explicit is good
+    'Content-Type': 'multipart/form-data',
   },
   withCredentials: true
-})
-export const axiosForPublic = axios.create({
-  // baseURL: 'https://form-app-backend-one.vercel.app/api/v1/users', 
-  baseURL: 'http://localhost:8000/api/v1/users', 
-})
-
-// Axios instance with credentials
-export const axiosInstance = axios.create({
-  // baseURL: 'https://form-app-backend-one.vercel.app/api/v1/users', // Adjust to your base URL
-  baseURL: 'http://localhost:8000/api/v1/users', // Adjust to your base URL
-  headers: { 'Content-Type': 'application/json' },
-  withCredentials: true // Ensures cookies are sent with requests
 });
 
+export const axiosForPublic = axios.create({
+  baseURL: `${baseURL}/api/v1/users`,
+});
+
+export const axiosInstance = axios.create({
+  baseURL: `${baseURL}/api/v1/users`,
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true
+});
 
 const axiosRefreshInstance = axios.create({
-  baseURL: 'http://localhost:8000/api/v1/users',
+  baseURL: `${baseURL}/api/v1/users`,
   headers: { 'Content-Type': 'application/json' },
-  withCredentials: true // Ensures cookies are sent with requests
+  withCredentials: true
 });
 // Request interceptor (no need to set Authorization header as cookies handle it)
 axiosInstance.interceptors.request.use(
@@ -42,7 +39,6 @@ axiosInstance.interceptors.response.use(
   (response) => response, // Just return the response if successful
   async (error) => {
     const originalRequest = error.config;
-    console.log(error,"ha ")
     // Handle token expiration (401 Unauthorized)
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true; // Prevents infinite retry loops
