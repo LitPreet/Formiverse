@@ -76,7 +76,7 @@ export const getFormById = async (formId:string) => {
 export const getFormByIdForSubmit = async (formId:string) => {
   const id = formId
   try {
-    const response = await axiosForPublic.get(`/submit-formView/${id}`);;
+    const response = await axioss.get(`/submit-formView/${id}`);;
     return response.data.data;
   } catch (error:any) {
     throw new Error(error);
@@ -128,7 +128,7 @@ export const SubmitFormBuild = async (formId:string,data:Form) => {
 export const SubmitFormResponse = async (id:string,data:Form) => {
   const formId = id;
   try {
-    const response = await axiosForPublic.post(`/submission-form/${formId}`, data); // Adjust the URL as per your server config
+    const response = await axioss.post(`/submission-form/${formId}`, data); // Adjust the URL as per your server config
     return response.data;
   } catch (error:any) {
     if (error.response) {

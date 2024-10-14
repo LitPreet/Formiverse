@@ -9,7 +9,6 @@ const MainPage = () => {
   const navigate = useNavigate();
   const path = useRoutePath()
   const theme = useTheme();
-  const isAuthenticated = localStorage.getItem('authenticated')
   const user = useSelector((state:RootState) => state.auth.user)
   return (
     <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-6 h-[93vh] overflow-hidden">
