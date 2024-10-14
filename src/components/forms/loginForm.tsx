@@ -34,7 +34,6 @@ const LoginForm = () => {
       password: "",
     },
   });
-
   const [showPassword, setShowPassword] = useState(false);
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -75,6 +74,18 @@ const LoginForm = () => {
     mutation.mutate(formData);
   }
 
+  const handleGuestLogin = () => {
+    const guestData = {
+      username: import.meta.env.VITE_GUEST_USERNAME,
+      password: import.meta.env.VITE_GUEST_PASS,
+      email: import.meta.env.VITE_GUEST_EMAIL,
+    };
+    form.setValue("username", guestData.username);
+    form.setValue("email", guestData.email);
+    form.setValue("password", guestData.password);
+    onSubmit(guestData);
+  };
+
   return (
     <Form {...form}>
       <h1 className="text-center font-bold text-xl dark:text-white text-gray-700">
@@ -95,7 +106,7 @@ const LoginForm = () => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
@@ -115,7 +126,7 @@ const LoginForm = () => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
@@ -144,21 +155,29 @@ const LoginForm = () => {
                   </button>
                 </div>
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
 
         {/* Submit Button */}
-        <Button type="submit" disabled={mutation.isLoading}>
+        <Button type="submit" disabled={mutation.isLoading} className="w-full">
           {mutation.isLoading ? <Loading /> : "Submit"}
         </Button>
-
+        <p className="text-center dark:text-gray-300 text-gray-600">or</p>
+        <Button
+          type="button"
+          onClick={handleGuestLogin}
+          disabled={mutation.isLoading}
+          className="w-full mt-2"
+        >
+          {mutation.isLoading ? <Loading /> : "Guest Login"}
+        </Button>
         <p className="text-sm mt-2 dark:text-white text-gray-700">
           Forgot your password?
           <span
             className="text-primary font-semibold mx-1 cursor-pointer"
-            onClick={() => navigate("/forgot-password")} // Replace with your actual path
+            onClick={() => navigate(path.forgotPassword)} // Replace with your actual path
           >
             Reset it here
           </span>

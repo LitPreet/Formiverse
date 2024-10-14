@@ -189,3 +189,29 @@ export const sendFormLinkMail = async (data:MailFormUrl) => {
     throw error; 
   }
 };
+
+
+export const forgotPasswordSendOtp = async (data:{email:string}) => {
+  try {
+    const response = await axioss.post(`/send-password-reset-otp`,data); 
+    return response.data.data;
+  } catch (error:any) {
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
+  }
+};
+
+export const verifyforgotPasswordSendOtp = async (data:{email:string,otp:string,newPassword:string}) => {
+  try {
+    const response = await axioss.post(`/verify-otp-and-change-password`,data); 
+    return response.data.data;
+  } catch (error:any) {
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
+  }
+};
+

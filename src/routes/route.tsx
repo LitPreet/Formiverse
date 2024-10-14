@@ -11,6 +11,7 @@ import FormView from "@/formview/FormView";
 import FormSettings from "@/formview/components/FormSettings";
 import FormResponse from "@/formview/components/FormResponse";
 import SubmitForm from "@/SubmitForm/SubmitForm";
+import ForgotPasswordForm from "@/components/forms/ForgotPasswordForm";
 
 const FallbackLoader = () => <div>Loading...</div>;
 
@@ -24,6 +25,7 @@ const AllRoutes = () => {
           <Route path={routePath.registerUser} element={<Register />} />
           <Route path={routePath.login} element={<Login />} />
           <Route path={routePath.submitForm} element={<SubmitForm />} />
+          <Route path={routePath.forgotPassword} element={<ForgotPasswordForm />} />
           <Route path={routePath.home} element={<Layout />}>
             <Route index element={<MainPage />} />
             {/* private route  */}

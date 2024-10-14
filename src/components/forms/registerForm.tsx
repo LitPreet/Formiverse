@@ -105,7 +105,7 @@ export function RegisterForm() {
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-red-500"/>
             </FormItem>
           )}
         />
@@ -124,7 +124,7 @@ export function RegisterForm() {
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-red-500"/>
             </FormItem>
           )}
         />
@@ -144,7 +144,7 @@ export function RegisterForm() {
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-red-500"/>
             </FormItem>
           )}
         />
@@ -172,7 +172,7 @@ export function RegisterForm() {
                   </button>
                 </div>
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-red-500"/>
             </FormItem>
           )}
         />

@@ -7,7 +7,8 @@ export const useRoutePath = () => {
         formSettings: "/form/:id/settings", 
         formResponses: "/form/:id/responses",
         home:"/",
-        submitForm:"/submit-form/:id"
+        submitForm:"/submit-form/:id",
+        forgotPassword: "/forgot-password",
     }
     return path
 }

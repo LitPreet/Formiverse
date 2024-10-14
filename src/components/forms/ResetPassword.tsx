@@ -1,45 +1,42 @@
-import { verifyOTP } from "@/api/auth";
-import { OTP } from "@/lib/types/auth";
+import { verifyforgotPasswordSendOtp } from "@/api/auth";
 import React, { MutableRefObject, useRef, useState } from "react";
 import { useMutation } from "react-query";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Loading } from "../loader/Loader";
-import { setCredentials } from "@/features/auth/authSlice";
-import { useDispatch } from "react-redux";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "../ui/input";
 
-const OTPForm = () => {
+type MutationData = {
+  email: string;
+  otp: string;
+  newPassword: string;
+};
+
+const ResetPassword = () => {
   const [otp, setOtp] = useState<string[]>(new Array(4).fill(""));
+  const [password, setShowPassword] = useState<string>("");
   const inputRefs: MutableRefObject<HTMLInputElement[]> = useRef([]);
   const navigate = useNavigate();
-  const {toast} = useToast()
-  const location = useLocation();
-  const from = location?.state?.from?.pathname || "/";
-  const email = localStorage.getItem("email");
-  const dispatch = useDispatch();
-  
+  const { toast } = useToast();
+  const email = localStorage.getItem("emailForOTP");
+
   const mutation = useMutation({
-    mutationFn: (data: OTP) => verifyOTP(data),
-    onSuccess: (data) => {
-      const { accessToken, user } = data.data;
-      const { username, email, fullName } = user;
-      dispatch(
-        setCredentials({
-          accessToken,
-          user: { username, email, fullName },
-        })
-      );
-      navigate(from, { replace: true });
-      localStorage.setItem("authenticated", "true");
+    mutationFn: (data: MutationData) => verifyforgotPasswordSendOtp(data),
+    onSuccess: () => {
+      localStorage.removeItem("showVerifyPassword");
+      localStorage.removeItem("emailForOTP");
+      toast({
+        variant: "default",
+        description: "Password changed successfully!",
+      });
+      navigate("/login"); // Redirect after successful password reset
     },
-    onError: (error:any) => {
+    onError: (error: any) => {
       toast({
         variant: "destructive",
-        description: `${error?.data?.message}`,
+        description: `${error?.data?.message || "Something went wrong"}`,
       });
-      // Handle error, e.g., show an error message
-      console.error("Registration error", error);
     },
   });
 
@@ -68,23 +65,28 @@ const OTPForm = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (otp.some((val) => val === "")) {
-      // Handle incomplete OTP input
-      alert("Please fill in all OTP fields");
+    if (otp.some((val) => val === "" || !password)) {
+      toast({
+        variant: "destructive",
+        description: "Please fill in all fields!",
+      });
       return;
     }
-    const data = {
-      email: email,
+    const data: MutationData = {
+      email: email!,
       otp: otp.join(""),
+      newPassword: password,
     };
     mutation.mutate(data);
   };
 
   return (
-    <div className="flex flex-col items-center w-full justify-start">
-      <h1 className="text-center font-bold text-gray-700 dark:text-gray-200 text-2xl my-5">Verification code</h1>
-      <p className="text-gray-500 dark:text-gray-200 text-sm  text-center">
-      {`An 4 digit code has been sent to your email ${email || ''}`}
+    <div className="max-w-md w-full py-4 border dark:border-gray-200 border-gray-500 rounded-md flex flex-col items-center justify-center px-6">
+      <h1 className="text-center font-bold text-2xl my-5 text-gray-600 dark:text-gray-200">
+        Verification code
+      </h1>
+      <p className="text-gray-500 dark:text-gray-200  text-sm text-center">
+        {`An 4 digit code has been sent to your email ${email || ""}`}
       </p>
       <form onSubmit={handleSubmit} className="space-y-5 flex flex-col">
         <div className="flex">
@@ -108,12 +110,18 @@ const OTPForm = () => {
             );
           })}
         </div>
+        <Input
+          className="border border-gray-400 text-black dark:text-gray-200"
+          placeholder="Enter new password"
+          value={password}
+          onChange={(e) => setShowPassword(e.target.value)}
+        />
         <Button disabled={mutation.isLoading || otp.length < 3}>
-          {mutation.isLoading ? <Loading /> : "Verify"}
+          {mutation.isLoading ? <Loading /> : "Submit"}
         </Button>
       </form>
     </div>
   );
 };
 
-export default OTPForm;
+export default ResetPassword;
