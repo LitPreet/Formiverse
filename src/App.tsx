@@ -4,11 +4,12 @@ import AllRoutes from "./routes/route";
 import { useQuery } from "react-query";
 import { getCurrentUser } from "./api/auth";
 import { useEffect } from "react";
-import { setUser } from "./features/auth/authSlice";
+import {  setUser } from "./features/auth/authSlice";
 import { Toaster } from "./components/ui/toaster";
 
 function App() {
   const dispatch = useDispatch();
+
   const isAuthenticated = localStorage.getItem("authenticated") === "true";
   const { data } = useQuery(
     ["currentUser"],

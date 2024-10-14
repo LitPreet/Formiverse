@@ -8,12 +8,14 @@ interface User {
 }
 interface AuthState {
     accessToken: string | null;
-    user: User | undefined
+    user: User | undefined;
+    isAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
     accessToken: null,
     user: undefined,
+    isAuthenticated: false, 
 };
 
 const authSlice = createSlice({
@@ -24,14 +26,17 @@ const authSlice = createSlice({
             state.accessToken = action.payload.accessToken;
          
             state.user = action.payload.user;
+            state.isAuthenticated = true; 
           },
           logout: (state) => {
             state.accessToken = null;
             state.user = undefined;
+            state.isAuthenticated = false;
          
           },
         setUser: (state, action: PayloadAction<User | undefined>) => {
             state.user = action.payload
+            state.isAuthenticated = true; 
         },
         updateTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
             state.accessToken = action.payload.accessToken;

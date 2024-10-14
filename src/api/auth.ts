@@ -1,11 +1,11 @@
 import { OTP, User } from "@/lib/types/auth"
-import { axiosForAuth, axiosForPublic, axiosInstance as axioss } from "./axios"
+import { axiosForPublic, axiosInstance as axioss } from "./axios"
 import { Form, MailFormUrl } from "@/lib/types/Form"
 
 
 export const registerUser = async (data: FormData) => {
   try {
-    const res = await axiosForAuth.post('/register', data);
+    const res = await axioss.post('/register', data);
     return res.data;
   } catch (error: any) {
     if (error.response) {
@@ -17,7 +17,7 @@ export const registerUser = async (data: FormData) => {
 
 export const verifyOTP = async (data: OTP) => {
   try {
-    const res = await axiosForAuth.post('/verify-otp', data);
+    const res = await axioss.post('/verify-otp', data);
     return res.data;
   } catch (error: any) {
     if (error.response) {
@@ -30,7 +30,7 @@ export const verifyOTP = async (data: OTP) => {
 export const loginUser = async (data: { username: string, email: string; password: string, }) => {
 
   try {
-    const response = await axiosForAuth.post('/login', data);
+    const response = await axioss.post('/login', data);
     return response.data
   } catch (error:any) {
     if (error.response) {
@@ -206,6 +206,18 @@ export const forgotPasswordSendOtp = async (data:{email:string}) => {
 export const verifyforgotPasswordSendOtp = async (data:{email:string,otp:string,newPassword:string}) => {
   try {
     const response = await axioss.post(`/verify-otp-and-change-password`,data); 
+    return response.data.data;
+  } catch (error:any) {
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
+  }
+};
+
+export const verifyAuth = async () => {
+  try {
+    const response = await axioss.get(`/check-auth`); 
     return response.data.data;
   } catch (error:any) {
     if (error.response) {

@@ -59,7 +59,7 @@ const LoginForm = () => {
       // Handle error, e.g., show an error message
       toast({
         variant: "destructive",
-        description: `${error?.data?.message}`,
+        description: `${error?.data?.message || "something went wrong!"}`
       });
       console.error("login error", error);
     },

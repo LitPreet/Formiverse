@@ -2,14 +2,6 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_LIVE_URL || import.meta.env.VITE_LOCAL_URL;
 
-export const axiosFormInstance = axios.create({
-  baseURL: `${baseURL}/api/v1/users`, 
-  headers: {
-    'Content-Type': 'multipart/form-data',
-  },
-  withCredentials: true
-});
-
 export const axiosForPublic = axios.create({
   baseURL: `${baseURL}/api/v1/users`,
 });
@@ -18,10 +10,6 @@ export const axiosInstance = axios.create({
   baseURL: `${baseURL}/api/v1/users`,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true
-});
-export const axiosForAuth = axios.create({
-  baseURL: `${baseURL}/api/v1/users`,
-  headers: { 'Content-Type': 'application/json' },
 });
 
 const axiosRefreshInstance = axios.create({
