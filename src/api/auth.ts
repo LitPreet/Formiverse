@@ -2,7 +2,6 @@ import { OTP, User } from "@/lib/types/auth"
 import {  axiosInstance as axioss } from "./axios"
 import { Form, MailFormUrl } from "@/lib/types/Form"
 
-
 export const registerUser = async (data: FormData) => {
   try {
     const res = await axioss.post('/register', data);
@@ -76,6 +75,7 @@ export const getFormById = async (formId:string) => {
 export const getFormByIdForSubmit = async (formId:string) => {
   const id = formId
   try {
+    // const response = await axios.get(`https://form-app-backend-one.vercel.app/submit-formView/${id}`);
     const response = await axioss.get(`/submit-formView/${id}`);
     console.log(response, `/submit-formView/${id}`)
     return response.data.data;

@@ -24,7 +24,7 @@ const AllRoutes = () => {
           {/* publuc route  */}
           <Route path={routePath.registerUser} element={<Register />} />
           <Route path={routePath.login} element={<Login />} />
-          <Route path={routePath.submitForm} element={<SubmitForm />} />
+          <Route path={"/submit-form/:id"} element={<SubmitForm />} />
           <Route path={routePath.forgotPassword} element={<ForgotPasswordForm />} />
           <Route path={routePath.home} element={<Layout />}>
             <Route index element={<MainPage />} />
