@@ -10,7 +10,6 @@ import { Toaster } from "./components/ui/toaster";
 function App() {
   const dispatch = useDispatch();
   const isAuthenticated = localStorage.getItem("authenticated") === "true";
-  // console.log(user, token, "ju");
   const { data } = useQuery(
     ["currentUser"],
     getCurrentUser,
@@ -23,7 +22,6 @@ function App() {
   useEffect(() => {
     if (data) {
       const { username, email, fullName } = data;
-      console.log("unnj", { username, email, fullName });
       dispatch(setUser({ username, email, fullName }));
     }
   }, [data]);

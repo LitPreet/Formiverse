@@ -20,8 +20,10 @@ import { useState } from "react";
 import OTPForm from "./OTPForm";
 import { useNavigate } from "react-router-dom";
 import { useRoutePath } from "@/hooks/useRoutePath";
+import { useToast } from "@/hooks/use-toast";
 
 export function RegisterForm() {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -31,18 +33,20 @@ export function RegisterForm() {
       password: "",
     },
   });
-   const navigate = useNavigate()
-   const path = useRoutePath()
+  const navigate = useNavigate();
+  const path = useRoutePath();
   const mutation = useMutation({
     mutationFn: (data: FormData) => registerUser(data),
-    onSuccess: (data) => {
-      // Handle success, e.g., show a success message or redirect
-      console.log("Registration successful", data);
+    onSuccess: () => {
       setShowOTPForm(!showOTPForm);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       // Handle error, e.g., show an error message
-      console.error("Registration error", error);
+      toast({
+        variant: "destructive",
+        description: `${error?.data?.message}`,
+      });
+      console.error("Registration error", error?.data?.message);
     },
   });
 
@@ -56,27 +60,33 @@ export function RegisterForm() {
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     // Create a new FormData object
     const formData = new FormData();
-  
+
     // Append each form field to the FormData
-    formData.append('username', values.username);
-    formData.append('fullName', values.fullName);
-    formData.append('email', values.email);
-    formData.append('password', values.password);
+    formData.append("username", values.username);
+    formData.append("fullName", values.fullName);
+    formData.append("email", values.email);
+    formData.append("password", values.password);
 
     // Use your mutation function to send the FormData to your API
     try {
-     const data =  await registerUser(formData); // The mutation function should handle FormData
-     localStorage.setItem('email',data?.data?.email)
-     console.log(data)
-      setShowOTPForm(!showOTPForm)
-    } catch (error) {
-      console.error('Error registering user:', error);
+      const data = await registerUser(formData); // The mutation function should handle FormData
+      localStorage.setItem("email", data?.data?.email);
+      setShowOTPForm(!showOTPForm);
+    } catch (error:any) {
+      toast({
+        variant: "destructive",
+        description: `${error?.data?.message}`,
+      });
     }
   }
- 
-  return showOTPForm ? (<OTPForm />) : (
+
+  return showOTPForm ? (
+    <OTPForm />
+  ) : (
     <Form {...form}>
-      <h1 className="text-center font-bold text-xl dark:text-white text-gray-700">Register for free</h1>
+      <h1 className="text-center font-bold text-xl dark:text-white text-gray-700">
+        Register for free
+      </h1>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-2 relative"
@@ -89,7 +99,11 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>User Name</FormLabel>
               <FormControl>
-                <Input className="border border-gray-400 text-black dark:text-gray-200" placeholder="Enter your username" {...field} />
+                <Input
+                  className="border border-gray-400 text-black dark:text-gray-200"
+                  placeholder="Enter your username"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,7 +118,11 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input className="border border-gray-400 text-black dark:text-gray-200" placeholder="Enter your full name" {...field} />
+                <Input
+                  className="border border-gray-400 text-black dark:text-gray-200"
+                  placeholder="Enter your full name"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -119,13 +137,18 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" className="border border-gray-400 text-black dark:text-gray-200" placeholder="Enter your email" {...field} />
+                <Input
+                  type="email"
+                  className="border border-gray-400 text-black dark:text-gray-200"
+                  placeholder="Enter your email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-     {/* Password Field */}
+        {/* Password Field */}
         <FormField
           control={form.control}
           name="password"
@@ -159,7 +182,15 @@ export function RegisterForm() {
           {mutation.isLoading ? <Loading /> : "Submit"}
         </Button>
       </form>
-      <p className="text-sm mt-2 dark:text-white text-gray-700">Already have an account ?<span className="text-primary mx-1 cursor-pointer" onClick={() => navigate(path.login)}>Sign in</span></p>
+      <p className="text-sm mt-2 dark:text-white text-gray-700">
+        Already have an account ?
+        <span
+          className="text-primary mx-1 font-semibold cursor-pointer"
+          onClick={() => navigate(path.login)}
+        >
+          Sign in
+        </span>
+      </p>
     </Form>
   );
 }

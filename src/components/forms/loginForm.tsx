@@ -18,12 +18,14 @@ import { loginUser } from "@/api/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoginUser } from "@/lib/types/auth";
 import { useState } from "react";
-import { Eye,EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { setCredentials } from "@/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useRoutePath } from "@/hooks/useRoutePath";
+import { useToast } from "@/hooks/use-toast";
 
 const LoginForm = () => {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -38,24 +40,29 @@ const LoginForm = () => {
     setShowPassword(!showPassword);
   };
   const navigate = useNavigate();
-  const path = useRoutePath()
+  const path = useRoutePath();
   const location = useLocation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const from = location?.state?.from?.pathname || "/";
 
   const mutation = useMutation({
-    mutationFn: (data:LoginUser) => loginUser(data),
+    mutationFn: (data: LoginUser) => loginUser(data),
     onSuccess: (data: any) => {
-      console.log("Registration successful",data);
-      const {accessToken, user} =data.data
-      const {username, email, fullName} = user
-      dispatch(setCredentials({ accessToken, user: {username, email, fullName} }));
+      const { accessToken, user } = data.data;
+      const { username, email, fullName } = user;
+      dispatch(
+        setCredentials({ accessToken, user: { username, email, fullName } })
+      );
       navigate(from, { replace: true });
-      localStorage.setItem('authenticated', 'true');
+      localStorage.setItem("authenticated", "true");
     },
     onError: (error: any) => {
       // Handle error, e.g., show an error message
-      console.error("Registration error", error);
+      toast({
+        variant: "destructive",
+        description: `${error?.data?.message}`,
+      });
+      console.error("login error", error);
     },
   });
 
@@ -70,7 +77,9 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <h1 className="text-center font-bold text-xl dark:text-white text-gray-700">Login for free</h1>
+      <h1 className="text-center font-bold text-xl dark:text-white text-gray-700">
+        Login for free
+      </h1>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         {/* Username Field */}
         <FormField
@@ -80,7 +89,11 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>User Name</FormLabel>
               <FormControl>
-                <Input className="border border-gray-400 text-black dark:text-gray-200" placeholder="Enter your username" {...field} />
+                <Input
+                  className="border border-gray-400 text-black dark:text-gray-200"
+                  placeholder="Enter your username"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,7 +108,12 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" className="border border-gray-400 text-black dark:text-gray-200" placeholder="Enter your email" {...field} />
+                <Input
+                  type="email"
+                  className="border border-gray-400 text-black dark:text-gray-200"
+                  placeholder="Enter your email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -112,7 +130,7 @@ const LoginForm = () => {
               <FormControl>
                 <div className="relative">
                   <Input
-                  className="border border-gray-400 w-full text-black dark:text-gray-200"
+                    className="border border-gray-400 w-full text-black dark:text-gray-200"
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     {...field}
@@ -135,8 +153,26 @@ const LoginForm = () => {
         <Button type="submit" disabled={mutation.isLoading}>
           {mutation.isLoading ? <Loading /> : "Submit"}
         </Button>
+
+        <p className="text-sm mt-2 dark:text-white text-gray-700">
+          Forgot your password?
+          <span
+            className="text-primary font-semibold mx-1 cursor-pointer"
+            onClick={() => navigate("/forgot-password")} // Replace with your actual path
+          >
+            Reset it here
+          </span>
+        </p>
       </form>
-      <p className="text-sm mt-2 dark:text-white text-gray-700">Don't have an account ?<span className="text-primary mx-1 cursor-pointer" onClick={() => navigate(path.registerUser)}>Sign up</span></p>
+      <p className="text-sm mt-2 dark:text-white text-gray-700">
+        Don't have an account ?
+        <span
+          className="text-primary mx-1 font-semibold cursor-pointer"
+          onClick={() => navigate(path.registerUser)}
+        >
+          Sign up
+        </span>
+      </p>
     </Form>
   );
 };

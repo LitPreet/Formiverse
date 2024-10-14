@@ -30,12 +30,12 @@ const FormSettings = () => {
       })
 
     },
-    onError: () => {
+    onError: (error:any) => {
       // Handle error, e.g., show an error message
       toast({
         variant: "destructive",
-        description: "Error Deleting form",
-      })
+        description: `${error?.data?.message || "Something went wrong"}`,
+      });
   
     },
   });

@@ -19,6 +19,10 @@ export const axiosInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true
 });
+export const axiosForAuth = axios.create({
+  baseURL: `${baseURL}/api/v1/users`,
+  headers: { 'Content-Type': 'application/json' },
+});
 
 const axiosRefreshInstance = axios.create({
   baseURL: `${baseURL}/api/v1/users`,

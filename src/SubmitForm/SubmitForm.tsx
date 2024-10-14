@@ -1,7 +1,7 @@
 import  { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useQuery, useMutation } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getFormByIdForSubmit, SubmitFormResponse } from "@/api/auth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,8 @@ import { Question } from "@/lib/types/Form";
 import { useToast } from "@/hooks/use-toast";
 import { ShimmerFormView } from "@/components/loader/Shimmer";
 import ToggleForm from "./components/ToggleForm";
+import { useRoutePath } from "@/hooks/useRoutePath";
+import NotFound from "./../assets/images/oops.png"
 
 type SubmitFormValues = {
   answers: { questionId: string; answer?: string }[];
@@ -17,6 +19,8 @@ type SubmitFormValues = {
 const SubmitForm = () => {
   const { id } = useParams();
   const { toast } = useToast();
+  const navigate = useNavigate()
+  const path = useRoutePath()
 
   const { data, isLoading, error } = useQuery(
     ["getFormById", id],
@@ -78,8 +82,6 @@ const SubmitForm = () => {
     setValidationErrors(errors);
 
     if (errors.length === 0) {
-      console.log("Form submitted with values:", values);
-
       const formattedData = {
         answers: values.answers.map((ans, index) => ({
           question: ans.questionId,
@@ -102,9 +104,33 @@ const SubmitForm = () => {
     clearErrors(); // Clear any validation errors
   };
 
-  if (error) return <div>Error loading form</div>;
+  if (error) return (
+    <div className="w-full flex flex-col items-center justify-center h-screen bg-gray-50">
+      {/* 404 Image */}
+      <img
+        src={NotFound} // Replace with the actual image path
+        alt="404 Not Found"
+        className="w-72 mb-6"
+      />
+      
+      {/* Error message */}
+      <p className="text-xl font-semibold text-center text-gray-700">We are facing some issue, please try again later.</p>
+      
+      {/* Call to action */}
+      <p className="mt-4 text-lg text-center text-gray-600">
+        Want to create new forms and share them?{" "}
+        <span
+          className="font-bold text-blue-600 cursor-pointer"
+          onClick={() => navigate(path.home)}
+        >
+          Sign up to Forms!
+        </span>
+      </p>
+    </div>
+  );
+  
 
-  console.log(validationErrors, "im error");
+ 
   return (
     <div className="w-full relative flex justify-start  flex-col gap-2 min-h-screen items-center">
       {formSubmitted ? (
@@ -368,7 +394,7 @@ const SubmitForm = () => {
                   </div>
                 ))}
 
-                <Button type="submit" className="my-4">
+                <Button type="submit" className="my-4" disabled={responseMutation.isLoading}>
                   Submit
                 </Button>
               </form>

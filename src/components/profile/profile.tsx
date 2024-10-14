@@ -22,6 +22,9 @@ const Profile = ({ user }: { user: User | undefined }) => {
   const handleLogout = () => {
     localStorage.removeItem("authenticated");
     dispatch(logout());
+        // Remove cookies (set the cookie expiration to the past)
+        // document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        // document.cookie = "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     navigate(path.home);
   };
   return (

@@ -1,35 +1,42 @@
 import { OTP, User } from "@/lib/types/auth"
-import { axiosForPublic, axiosInstance as axioss } from "./axios"
+import { axiosForAuth, axiosForPublic, axiosInstance as axioss } from "./axios"
 import { Form, MailFormUrl } from "@/lib/types/Form"
 
 
 export const registerUser = async (data: FormData) => {
-  console.log(data, "inside api")
   try {
-    const res = await axioss.post('/register', data);
+    const res = await axiosForAuth.post('/register', data);
     return res.data;
-  } catch (err: any) {
-    throw new Error(err.message || 'An error occurred');
+  } catch (error: any) {
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
   }
 }
 
 export const verifyOTP = async (data: OTP) => {
   try {
-    const res = await axioss.post('/verify-otp', data);
+    const res = await axiosForAuth.post('/verify-otp', data);
     return res.data;
-  } catch (err: any) {
-    throw new Error(err.message || 'An error occurred');
+  } catch (error: any) {
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
   }
 }
 
 export const loginUser = async (data: { username: string, email: string; password: string, }) => {
 
   try {
-    const response = await axioss.post('/login', data);
-
+    const response = await axiosForAuth.post('/login', data);
     return response.data
-  } catch (error) {
-    console.error('Login failed:', error);
+  } catch (error:any) {
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
   }
 };
 
@@ -49,8 +56,11 @@ export const handleCreateForm = async (formType:string) => {
   try {
     const response = await axioss.post('/create-form',data);
     return response.data;
-  } catch (error) {
-    console.error("Error creating form:", error);
+  } catch (error:any) {
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
   }
 };
 
@@ -68,7 +78,8 @@ export const getFormByIdForSubmit = async (formId:string) => {
   try {
     const response = await axiosForPublic.get(`/submit-formView/${id}`);;
     return response.data.data;
-  } catch (error) {
+  } catch (error:any) {
+    throw new Error(error);
     console.error("Error fetchinng form:", error);
   }
 };
@@ -107,8 +118,10 @@ export const SubmitFormBuild = async (formId:string,data:Form) => {
     const response = await axioss.put(`/update-form/${formId}`, data); // Adjust the URL as per your server config
     return response.data;
   } catch (error:any) {
-    console.error('Error creating form:',error);
-    throw new Error(error);
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
   }
 };
 
@@ -118,7 +131,10 @@ export const SubmitFormResponse = async (id:string,data:Form) => {
     const response = await axiosForPublic.post(`/submission-form/${formId}`, data); // Adjust the URL as per your server config
     return response.data;
   } catch (error:any) {
-    throw new Error(error);
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
   }
 };
 
@@ -155,7 +171,10 @@ export const deleteFormById = async (formId:string) => {
     const response = await axioss.delete(`/delete-form/${formId}`); 
     return response.data.data;
   } catch (error:any) {
-    throw new Error(error);
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
   }
 };
 
@@ -164,6 +183,9 @@ export const sendFormLinkMail = async (data:MailFormUrl) => {
     const response = await axioss.post(`/send-formUrl`,data); 
     return response.data.data;
   } catch (error:any) {
-    throw new Error(error);
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
   }
 };

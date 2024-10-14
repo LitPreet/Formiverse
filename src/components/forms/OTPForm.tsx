@@ -7,11 +7,13 @@ import { Button } from "../ui/button";
 import { Loading } from "../loader/Loader";
 import { setCredentials } from "@/features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { useToast } from "@/hooks/use-toast";
 
 const OTPForm = () => {
   const [otp, setOtp] = useState<string[]>(new Array(4).fill(""));
   const inputRefs: MutableRefObject<HTMLInputElement[]> = useRef([]);
   const navigate = useNavigate();
+  const {toast} = useToast()
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
   const email = localStorage.getItem("email");
@@ -20,8 +22,6 @@ const OTPForm = () => {
   const mutation = useMutation({
     mutationFn: (data: OTP) => verifyOTP(data),
     onSuccess: (data) => {
-      // Handle success, e.g., show a success message or redirect
-      console.log("verification successful", data);
       const { accessToken, user } = data.data;
       const { username, email, fullName } = user;
       dispatch(
@@ -33,7 +33,11 @@ const OTPForm = () => {
       navigate(from, { replace: true });
       localStorage.setItem("authenticated", "true");
     },
-    onError: (error) => {
+    onError: (error:any) => {
+      toast({
+        variant: "destructive",
+        description: `${error?.data?.message}`,
+      });
       // Handle error, e.g., show an error message
       console.error("Registration error", error);
     },
@@ -41,12 +45,9 @@ const OTPForm = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, i: number) => {
     const value = e.target.value;
-    console.log(value);
     if (isNaN(+value)) return;
     const newOtp = [...otp];
     newOtp[i] = value.substring(value.length - 1);
-    console.log(newOtp);
-
     if (value && i < 3 && inputRefs.current[i + 1]) {
       inputRefs.current[i + 1].focus();
     }

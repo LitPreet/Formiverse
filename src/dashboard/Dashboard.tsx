@@ -10,16 +10,22 @@ import { IForm } from "@/lib/types/Form";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const {toast} = useToast();
   const mutation = useMutation({
     mutationFn: handleCreateForm,
     onSuccess: (data: any) => {
       navigate(`/form/${data.data?.response?.formId}`);
     },
     onError: (error: any) => {
-      console.error("Registration error", error);
+      toast({
+        variant: "destructive",
+        description: `${error?.data?.message || 'Something went wrong'}`,
+      });
+      console.error("form creation error", error);
     },
   });
 

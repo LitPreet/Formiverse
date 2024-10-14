@@ -102,9 +102,8 @@ const FormEdit = () => {
       // Handle error, e.g., show an error message
       toast({
         variant: "destructive",
-        description: "Error submitting form",
+        description: `${error?.data?.message || 'Something went wrong'}`,
       })
-      console.error("Error adding question", error);
     },
   });
 
@@ -120,6 +119,10 @@ const FormEdit = () => {
     },
     onError: (error: any) => {
       console.error("Error:", error);
+      toast({
+        variant: "destructive",
+        description: "Something went wrong while deleting Question!",
+      })
     }
   });
 
@@ -158,7 +161,6 @@ const FormEdit = () => {
       toast({
         description: "Question added successfully",
       })
-      console.log("Question added successfully", data);
     },
     onError: (error: any) => {
       // Handle error, e.g., show an error message
