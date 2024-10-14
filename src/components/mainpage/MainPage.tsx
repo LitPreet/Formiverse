@@ -2,12 +2,15 @@ import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { useRoutePath } from "@/hooks/useRoutePath";
 import { useTheme } from "@/hooks/useTheme";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const MainPage = () => {
   const navigate = useNavigate();
   const path = useRoutePath()
   const theme = useTheme();
   const isAuthenticated = localStorage.getItem('authenticated')
+  const user = useSelector((state:RootState) => state.auth.user)
   return (
     <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-6 h-[93vh] overflow-hidden">
      <div
@@ -35,9 +38,9 @@ const MainPage = () => {
             helping you gather insights in real-time. Smart, simple, and built
             for your needs.
           </p>
-          {isAuthenticated === 'true' && <Button className="my-4" onClick={() => navigate(path.dashboard)}>Start Building</Button>}
+          {user && <Button className="my-4" onClick={() => navigate(path.dashboard)}>Start Building</Button>}
           {
-            isAuthenticated !== 'true' && ( <div className="mt-16 flex flex-wrap justify-center gap-y-4 gap-x-6">
+            !user && ( <div className="mt-16 flex flex-wrap justify-center gap-y-4 gap-x-6">
               <div
                 className="relative flex h-11 w-56  items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:bg-primary before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max" onClick={() => navigate(path.registerUser)}
               >
