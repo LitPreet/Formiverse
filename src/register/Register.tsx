@@ -11,7 +11,7 @@ const Register = () => {
         <img
           src="https://readymadeui.com/login-image.webp"
           className="w-full h-full max-md:w-4/5 mx-auto block object-cover"
-          alt="Dining Experience"
+          alt="Dining"
         />
       </div>
       </div>
