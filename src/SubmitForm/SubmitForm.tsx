@@ -104,6 +104,7 @@ const SubmitForm = () => {
     clearErrors(); // Clear any validation errors
   };
 
+  console.log(error, data, 'hey')
   if (error) return (
     <div className="w-full flex flex-col items-center justify-center h-screen bg-gray-50">
       {/* 404 Image */}
@@ -157,7 +158,7 @@ const SubmitForm = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="max-w-7xl w-full mb-5 flex justify-start  flex-col gap-2 items-center"
               >
-                {data?.questions.map((question: Question, index: number) => (
+                {data && data?.questions.map((question: Question, index: number) => (
                   <div
                     key={question._id}
                     className="flex space-y-3 flex-col w-[90%] md:w-[50%] rounded-lg px-3 py-3  shadow-lg border border-gray-500 dark:border-gray-100"

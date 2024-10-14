@@ -76,11 +76,12 @@ export const getFormById = async (formId:string) => {
 export const getFormByIdForSubmit = async (formId:string) => {
   const id = formId
   try {
-    const response = await axioss.get(`/submit-formView/${id}`);;
+    const response = await axioss.get(`/submit-formView/${id}`);
+    console.log(response, `/submit-formView/${id}`)
     return response.data.data;
   } catch (error:any) {
+    console.error(error)
     throw new Error(error);
-    console.error("Error fetchinng form:", error);
   }
 };
 
