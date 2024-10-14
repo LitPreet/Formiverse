@@ -2,10 +2,6 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_LIVE_URL || import.meta.env.VITE_LOCAL_URL;
 
-export const axiosForPublic = axios.create({
-  baseURL: `${baseURL}/api/v1/users`,
-});
-
 export const axiosInstance = axios.create({
   baseURL: `${baseURL}/api/v1/users`,
   headers: { 'Content-Type': 'application/json' },

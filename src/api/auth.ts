@@ -1,5 +1,5 @@
 import { OTP, User } from "@/lib/types/auth"
-import { axiosForPublic, axiosInstance as axioss } from "./axios"
+import {  axiosInstance as axioss } from "./axios"
 import { Form, MailFormUrl } from "@/lib/types/Form"
 
 
