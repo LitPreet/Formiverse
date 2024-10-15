@@ -96,8 +96,11 @@ export const getAllForms = async () => {
   try {
     const response = await axioss.get(`/get-allForms`);
     return response.data;
-  } catch (error) {
-    console.error("Error creating form:", error);
+  } catch (error:any) {
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
   }
 };
 

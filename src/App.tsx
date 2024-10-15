@@ -11,7 +11,7 @@ function App() {
   const dispatch = useDispatch();
 
   const isAuthenticated = localStorage.getItem("authenticated") === "true";
-  const { data,error } = useQuery(
+  const { data,error,isError } = useQuery(
     ["currentUser"],
     getCurrentUser,
     {
@@ -26,14 +26,25 @@ function App() {
       dispatch(setUser({ username, email, fullName }));
     }
   }, [data]);
+  
+    useEffect(() => {
+      if (isError) {
+        const statusCode = (error as any)?.data?.statusCode; // Casting error to any
+        if (statusCode === 401) {
+          window.location.href = '/login'
+        }
+      }
+    }, [isError, error]);
 
   if (error && isAuthenticated) {
     return (
-      <div className="w-full h-screen flex items-center justify-center">
+      <div className="w-full h-screen flex items-center justify-center text-center">
         <p>An unexpected error occurred. Please try again later.</p>
       </div>
     );
   }
+
+
   return (
     <div className="App dark:bg-black">
       <Toaster />

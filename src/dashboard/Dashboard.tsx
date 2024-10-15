@@ -9,12 +9,14 @@ import SearchBar from "@/components/saerchBar";
 import { IForm } from "@/lib/types/Form";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useRoutePath } from "@/hooks/useRoutePath";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const {toast} = useToast();
+  const path = useRoutePath();
+  const { toast } = useToast();
   const mutation = useMutation({
     mutationFn: handleCreateForm,
     onSuccess: (data: any) => {
@@ -23,13 +25,13 @@ const Dashboard = () => {
     onError: (error: any) => {
       toast({
         variant: "destructive",
-        description: `${error?.data?.message || 'Something went wrong'}`,
+        description: `${error?.data?.message || "Something went wrong"}`,
       });
     },
   });
 
-  const { data,  isLoading, isError } = useQuery(
-    ["getAllforms"], 
+  const { data, isLoading, isError,error } = useQuery(
+    ["getAllforms"],
     async () => await getAllForms(),
     {
       retry: 2,
@@ -37,13 +39,30 @@ const Dashboard = () => {
   );
 
 
+
+  useEffect(() => {
+    if (isError) {
+      const statusCode = (error as any)?.data?.statusCode; // Casting error to any
+      if (statusCode === 401) {
+        navigate(path.login);
+      } else {
+      ; // Log the status code
+        toast({
+        variant:"destructive",
+          description: "An error occurred. Please try again."
+        });
+      }
+    }
+  }, [isError, error, navigate]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const formsPerPage = 6;
 
-  const filteredForms = data?.data?.filter((form: IForm) =>
-    form.heading.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+  const filteredForms =
+    data?.data?.filter((form: IForm) =>
+      form.heading.toLowerCase().includes(searchQuery.toLowerCase())
+    ) || [];
 
   // Calculate pagination variables
   const totalForms = filteredForms.length;
@@ -81,30 +100,38 @@ const Dashboard = () => {
     return (
       <div className="flex justify-center items-center space-x-2 my-2">
         {/* Prev Button */}
-        {currentPage !== 1 &&  <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="px-3 py-1 border bg-white text-gray-600 hover:bg-purple-700 hover:text-white"
-        >
-          Prev
-        </button>}
+        {currentPage !== 1 && (
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-1 border bg-white text-gray-600 hover:bg-purple-700 hover:text-white"
+          >
+            Prev
+          </button>
+        )}
         {/* Page Numbers */}
         {pages}
 
         {/* Next Button */}
-        {currentPage !== totalPages && <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="px-3 py-1 border bg-white text-gray-600 hover:bg-purple-700 hover:text-white"
-        >
-          Next
-        </button>}
-      
+        {currentPage !== totalPages && (
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 border bg-white text-gray-600 hover:bg-purple-700 hover:text-white"
+          >
+            Next
+          </button>
+        )}
       </div>
     );
   };
-    
-  if (isError) return <div className="w-full h-screen flex items-center justify-center text-gray-600 dark:text-gray-200 text-xl">Error loading data</div>;
+
+  if (isError)
+    return (
+      <div className="w-full h-screen flex items-center justify-center text-gray-600 dark:text-gray-200 text-xl">
+        Error loading data
+      </div>
+    );
 
   return (
     <div className="min-h-screen w-full dark:text-gray-200 text-gray-700 overflow-x-hidden">
@@ -160,7 +187,9 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {data.data && data.data.length > 0 && <SearchBar onSearch={handleSearch}/>}
+          {data.data && data.data.length > 0 && (
+            <SearchBar onSearch={handleSearch} />
+          )}
           <div className=" w-full flex flex-col items-center justify-center">
             <div className="w-[90%] sm:w-[80%] flex justify-center flex-col">
               <div className="flex justify-start items-center w-full">
@@ -202,7 +231,7 @@ const Dashboard = () => {
                   </div>
                 </div>
               )}
-               {totalPages > 1 && renderPagination()}
+              {totalPages > 1 && renderPagination()}
             </div>
           </div>
         </>
