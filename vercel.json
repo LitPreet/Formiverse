@@ -2,11 +2,5 @@
   "rewrites": [
     { "source": "/submit-form/(.*)", "destination": "/" },
     { "source": "/(.*)", "destination": "/" }
-  ],
-  "builds": [
-    {
-      "src": "build/**/*",
-      "use": "@vercel/static-build"
-    }
   ]
 }
