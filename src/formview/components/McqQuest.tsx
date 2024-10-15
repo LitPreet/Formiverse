@@ -60,7 +60,6 @@ const McqQuest = ({
   questionData,
   form,
   index,
-  mutation,
   setQuestions,
 }: MCQQuestion) => {
   const {

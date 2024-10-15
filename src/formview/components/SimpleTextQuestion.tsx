@@ -58,7 +58,6 @@ const SimpleTextQuestion = ({
   questionData,
   form,
   index,
-  mutation,
   setQuestions,
 }: SimpleTextQuestion) => {
   const [loading, setLoading] = useState(false);
