@@ -74,6 +74,7 @@ const McqQuest = ({
       : [""]
   );
   const { toast } = useToast()
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     setOptions(questionData?.options || [""]); // Ensure options is updated
   }, [questionData]);
@@ -103,8 +104,10 @@ const McqQuest = ({
   };
 
   const handleDelete = async (id: string) => {
+    setLoading(true);
     try {
       const response = await deleteFormQuestion(id);
+      setLoading(false);
       if (response?.data?.questions) {
         setQuestions(response?.data?.questions);
       }
@@ -113,6 +116,7 @@ const McqQuest = ({
         description: "Question deleted successfully",
       })
     } catch (err) {
+      setLoading(false);
       toast({
         variant: "destructive",
         description: "Something went wrong",
@@ -145,10 +149,10 @@ const McqQuest = ({
         </Badge>
         <Button
           variant={"destructive"}
-          disabled={mutation.isLoading}
+          disabled={loading}
           onClick={() => handleDelete(questionData._id)}
         >
-          {mutation.isLoading ? <Loading /> : "Remove Question"}
+          {loading ? <Loading /> : "Remove Question"}
         </Button>
       </div>
 

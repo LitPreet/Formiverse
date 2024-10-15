@@ -47,7 +47,7 @@ const FormResponse = () => {
   });
 
   const handleViewClick = (response: any) => {
-    setSelectedResponse(response); // Set the selected response for detailed view
+    setSelectedResponse(response);
   };
   const closeDetails = () => {
     setSelectedResponse(null);

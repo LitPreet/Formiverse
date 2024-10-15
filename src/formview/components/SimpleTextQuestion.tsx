@@ -22,7 +22,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Loading } from "@/components/loader/Loader";
 import { Form as FormType } from "@/lib/types/Form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { deleteFormQuestion } from "@/api/auth";
 
 interface SimpleTextQuestion {
@@ -32,20 +32,26 @@ interface SimpleTextQuestion {
   ) => Promise<QueryObserverResult<any, unknown>>;
   formEditData: FormType;
   setFormEditData: React.Dispatch<React.SetStateAction<FormType>>;
-  form: UseFormReturn<{
-    heading: string;
-    description: string;
-    questions?: {
-        questionText: string;
-        questionDescription: string;
-        required: boolean;
-        options?: string[] | undefined;
-        questionType?: string | undefined;
-    }[] | undefined;
-}, any, undefined>
-index: number;
-mutation:UseMutationResult<any, any, string, unknown>
-setQuestions: React.Dispatch<React.SetStateAction<Question[]>>
+  form: UseFormReturn<
+    {
+      heading: string;
+      description: string;
+      questions?:
+        | {
+            questionText: string;
+            questionDescription: string;
+            required: boolean;
+            options?: string[] | undefined;
+            questionType?: string | undefined;
+          }[]
+        | undefined;
+    },
+    any,
+    undefined
+  >;
+  index: number;
+  mutation: UseMutationResult<any, any, string, unknown>;
+  setQuestions: React.Dispatch<React.SetStateAction<Question[]>>;
 }
 
 const SimpleTextQuestion = ({
@@ -55,30 +61,32 @@ const SimpleTextQuestion = ({
   mutation,
   setQuestions,
 }: SimpleTextQuestion) => {
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-  const {setValue} = form;
+  const { setValue } = form;
   useEffect(() => {
     setValue(`questions.${index}.questionType`, questionData?.questionType);
     setValue(`questions.${index}.options`, []);
   }, [setValue]);
 
-  
   const handleDelete = async (id: string) => {
+    setLoading(true);
     try {
       const response = await deleteFormQuestion(id);
-
+      setLoading(false);
       if (response?.data?.questions) {
         setQuestions(response?.data?.questions);
-      } 
+      }
       toast({
         variant: "destructive",
         description: "Question deleted successfully",
-      })
+      });
     } catch (err) {
+      setLoading(false);
       toast({
         variant: "destructive",
         description: "Something went wrong",
-      })
+      });
     }
   };
 
@@ -102,10 +110,10 @@ const SimpleTextQuestion = ({
         </Badge>
         <Button
           variant={"destructive"}
-          disabled={mutation.isLoading}
+          disabled={loading}
           onClick={() => handleDelete(questionData._id)}
         >
-          {mutation.isLoading ? <Loading /> : "Remove Question"}
+          {loading ? <Loading /> : "Remove Question"}
         </Button>
       </div>
       <div className="space-y-3">
@@ -165,7 +173,7 @@ const SimpleTextQuestion = ({
             </label>
           )}
         />
-      
+
         {/* <input type="checkbox" value={} className="sr-only peer" /> */}
         {questionData.questionType === "paragraph" && (
           <p className="text-sm dark:text-gray-200 text-gray-500  font-medium">

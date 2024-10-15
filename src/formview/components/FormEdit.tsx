@@ -19,8 +19,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Text } from "lucide-react";
 import { useMutation, useQuery } from "react-query";
-import { addQuestionToForm, deleteFormQuestion, getFormById, SubmitFormBuild } from "@/api/auth";
-import {  useParams } from "react-router-dom";
+import {
+  addQuestionToForm,
+  deleteFormQuestion,
+  getFormById,
+  SubmitFormBuild,
+} from "@/api/auth";
+import { useParams } from "react-router-dom";
 import { Loading } from "@/components/loader/Loader";
 import { useEffect, useState } from "react";
 import { ShimmerFormView } from "@/components/loader/Shimmer";
@@ -32,7 +37,6 @@ import { Form } from "@/components/ui/form";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 
-
 const FormEdit = () => {
   const { id } = useParams();
   const [formEditData, setFormEditData] = useState<FormType>({
@@ -41,9 +45,9 @@ const FormEdit = () => {
     questions: [],
   });
   const [questions, setQuestions] = useState<Question[]>([]); // Local state for questions
-  const { toast } = useToast()
+  const { toast } = useToast();
 
-  const { data,  isLoading,  refetch } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     ["getFormById", id], // `formId` as a dependency
     async () => await getFormById(id!),
     {
@@ -59,7 +63,10 @@ const FormEdit = () => {
             questionText: question.questionText || "",
             questionDescription: question.questionDescription || "",
             questionType: question.questionType || "",
-            options: question.options && question.options.length > 0 ? question.options : [""],
+            options:
+              question.options && question.options.length > 0
+                ? question.options
+                : [""],
             required: question.required ?? false,
           })),
         });
@@ -76,9 +83,7 @@ const FormEdit = () => {
     },
   });
 
-  const {
-    setValue,
-  } = form;
+  const { setValue } = form;
 
   const mutationforFormSubmit = useMutation({
     mutationFn: async ({
@@ -93,43 +98,42 @@ const FormEdit = () => {
     onSuccess: () => {
       toast({
         variant: "default",
-        className:"text-black dark:text-white",
+        className: "text-black dark:text-white",
         description: "Form Edited Successfully",
-      })
-
+      });
     },
     onError: (error: any) => {
       // Handle error, e.g., show an error message
       toast({
         variant: "destructive",
-        description: `${error?.data?.message || 'Something went wrong'}`,
-      })
+        description: `${error?.data?.message || "Something went wrong"}`,
+      });
     },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (questionId: string) => await deleteFormQuestion(questionId),
-    onSuccess: (data:any) => {
+    mutationFn: async (questionId: string) =>
+      await deleteFormQuestion(questionId),
+    onSuccess: (data: any) => {
       const updatedForm = data.data;
       setQuestions(updatedForm.questions);
       toast({
         variant: "destructive",
         description: "Question deleted successfully!",
-      })
+      });
     },
     onError: () => {
       toast({
         variant: "destructive",
         description: "Something went wrong while deleting Question!",
-      })
-    }
+      });
+    },
   });
-
 
   useEffect(() => {
     setValue("heading", data?.data?.heading);
     setValue("description", data?.data?.description);
-  }, [data,setValue]);
+  }, [data, setValue]);
 
   const mutation = useMutation({
     mutationFn: async ({
@@ -139,9 +143,9 @@ const FormEdit = () => {
     }: {
       id: string;
       questionType: string;
-      answerType: 'single' | 'multiple';
+      answerType: "single" | "multiple";
     }) => {
-      return await addQuestionToForm(id, questionType,answerType);
+      return await addQuestionToForm(id, questionType, answerType);
     },
     onSuccess: (data: any) => {
       // refetch();
@@ -156,16 +160,16 @@ const FormEdit = () => {
         createdAt: data.data.createdAt, // if the backend returns timestamps
         updatedAt: data.data.updatedAt,
       };
-      setQuestions((prevQuestions=[]) => [...prevQuestions, newQuestion]);
+      setQuestions((prevQuestions = []) => [...prevQuestions, newQuestion]);
       toast({
         description: "Question added successfully",
-      })
+      });
     },
     onError: () => {
       // Handle error, e.g., show an error message
       toast({
         description: "Something went wrong!",
-      })
+      });
     },
   });
 
@@ -173,12 +177,17 @@ const FormEdit = () => {
     const finalData = {
       heading: values.heading,
       description: values.description,
-      questions: values.questions && values.questions.map((question, index) => ({
-        ...question, // Spread form question data (without _id)
-        _id: questions[index]._id, // Add `_id` from the existing `questions` state
-      })),
+      questions:
+        values.questions &&
+        values.questions.map((question, index) => ({
+          ...question, // Spread form question data (without _id)
+          _id: questions[index]._id, // Add `_id` from the existing `questions` state
+        })),
     };
-    mutationforFormSubmit.mutate({ formId: id!, formEditData: finalData as FormType });
+    mutationforFormSubmit.mutate({
+      formId: id!,
+      formEditData: finalData as FormType,
+    });
   }
 
   return (
@@ -254,7 +263,9 @@ const FormEdit = () => {
                   </div>
                 ))}
               <div className="flex w-full justify-center items-center">
-                <Button className="w-1/4">Submit</Button>
+                <Button className="w-1/4" disabled={mutation.isLoading}>
+                  {mutation.isLoading ? <Loading /> : "Submit"}
+                </Button>
               </div>
             </form>
           </Form>
@@ -281,7 +292,11 @@ const FormEdit = () => {
                 <DropdownMenuItem
                   className="flex border-none justify-start items-center gap-2"
                   onClick={() =>
-                    mutation.mutate({ id: id!, questionType: "mcq",answerType:'single' })
+                    mutation.mutate({
+                      id: id!,
+                      questionType: "mcq",
+                      answerType: "single",
+                    })
                   }
                 >
                   <ListCheck className="text-sm" /> Multiple Choice
@@ -289,7 +304,11 @@ const FormEdit = () => {
                 <DropdownMenuItem
                   className="flex border-none justify-start items-center gap-2"
                   onClick={() =>
-                    mutation.mutate({ id: id!, questionType: "paragraph",answerType:'single' })
+                    mutation.mutate({
+                      id: id!,
+                      questionType: "paragraph",
+                      answerType: "single",
+                    })
                   }
                 >
                   <Text className="text-sm " />
@@ -298,7 +317,11 @@ const FormEdit = () => {
                 <DropdownMenuItem
                   className="flex border-none justify-start items-center gap-2"
                   onClick={() =>
-                    mutation.mutate({ id: id!, questionType: "url",answerType:'single' })
+                    mutation.mutate({
+                      id: id!,
+                      questionType: "url",
+                      answerType: "single",
+                    })
                   }
                 >
                   <Link className="text-sm " /> URL
@@ -306,7 +329,11 @@ const FormEdit = () => {
                 <DropdownMenuItem
                   className="flex border-none justify-start items-center gap-2"
                   onClick={() =>
-                    mutation.mutate({ id: id!, questionType: "email",answerType:'single' })
+                    mutation.mutate({
+                      id: id!,
+                      questionType: "email",
+                      answerType: "single",
+                    })
                   }
                 >
                   <Mail className="text-sm" />
@@ -315,7 +342,11 @@ const FormEdit = () => {
                 <DropdownMenuItem
                   className="flex border-none justify-start items-center gap-2"
                   onClick={() =>
-                    mutation.mutate({ id: id!, questionType: "checkbox",answerType:'multiple' })
+                    mutation.mutate({
+                      id: id!,
+                      questionType: "checkbox",
+                      answerType: "multiple",
+                    })
                   }
                 >
                   <ListTodo className="text-sm" /> Check Box
@@ -323,7 +354,11 @@ const FormEdit = () => {
                 <DropdownMenuItem
                   className="flex border-none justify-start items-center gap-2"
                   onClick={() =>
-                    mutation.mutate({ id: id!, questionType: "date",answerType:'single' })
+                    mutation.mutate({
+                      id: id!,
+                      questionType: "date",
+                      answerType: "single",
+                    })
                   }
                 >
                   <Calendar className="text-sm" /> Date
@@ -331,7 +366,11 @@ const FormEdit = () => {
                 <DropdownMenuItem
                   className="flex border-none justify-start items-center gap-2"
                   onClick={() =>
-                    mutation.mutate({ id: id!, questionType: "time",answerType:'single' })
+                    mutation.mutate({
+                      id: id!,
+                      questionType: "time",
+                      answerType: "single",
+                    })
                   }
                 >
                   <Clock className="text-sm" />
@@ -340,7 +379,11 @@ const FormEdit = () => {
                 <DropdownMenuItem
                   className="flex border-none justify-start items-center gap-2"
                   onClick={() =>
-                    mutation.mutate({ id: id!, questionType: "dropdown",answerType:'single' })
+                    mutation.mutate({
+                      id: id!,
+                      questionType: "dropdown",
+                      answerType: "single",
+                    })
                   }
                 >
                   <ChevronDown className="text-sm" />
