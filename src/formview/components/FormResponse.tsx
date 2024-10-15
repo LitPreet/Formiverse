@@ -69,9 +69,6 @@ const FormResponse = () => {
                 View
               </th>
               <th scope="col" className="px-6 py-3">
-                Export
-              </th>
-              <th scope="col" className="px-6 py-3">
                 Delete
               </th>
             </tr>
