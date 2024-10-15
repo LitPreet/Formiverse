@@ -1,18 +1,12 @@
 {
-    "rewrites": [
-      { "source": "/submit-form/(.*)", "destination": "/index.html" }
-    ],
-    "builds": [
-      {
-        "src": "build/**/*",
-        "use": "@vercel/static-build"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/index.html"
-      }
-    ]
-  }
-  
+  "rewrites": [
+    { "source": "/submit-form/(.*)", "destination": "/" },
+    { "source": "/(.*)", "destination": "/" }
+  ],
+  "builds": [
+    {
+      "src": "build/**/*",
+      "use": "@vercel/static-build"
+    }
+  ]
+}
