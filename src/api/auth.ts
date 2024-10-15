@@ -44,7 +44,10 @@ export const getCurrentUser = async (): Promise<User | undefined> => {
     const response = await axioss.get('/current-user');
     return response.data.data
   } catch (error:any) {
-   throw new Error(error)
+    if (error.response) {
+      throw error.response; 
+    }
+    throw error; 
   }
 };
 

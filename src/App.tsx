@@ -30,19 +30,14 @@ function App() {
     useEffect(() => {
       if (isError) {
         const statusCode = (error as any)?.data?.statusCode; // Casting error to any
+        console.log(statusCode)
+        console.log(error)
         if (statusCode === 401) {
+          localStorage.removeItem('authenticated')
           window.location.href = '/login'
         }
       }
     }, [isError, error]);
-
-  if (error && isAuthenticated) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center text-center">
-        <p>An unexpected error occurred. Please try again later.</p>
-      </div>
-    );
-  }
 
 
   return (
