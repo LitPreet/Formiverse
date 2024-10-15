@@ -11,7 +11,7 @@ function App() {
   const dispatch = useDispatch();
 
   const isAuthenticated = localStorage.getItem("authenticated") === "true";
-  const { data } = useQuery(
+  const { data,error } = useQuery(
     ["currentUser"],
     getCurrentUser,
     {
@@ -27,6 +27,13 @@ function App() {
     }
   }, [data]);
 
+  if (error && isAuthenticated) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <p>An unexpected error occurred. Please try again later.</p>
+      </div>
+    );
+  }
   return (
     <div className="App dark:bg-black">
       <Toaster />

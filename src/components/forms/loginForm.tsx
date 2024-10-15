@@ -61,7 +61,6 @@ const LoginForm = () => {
         variant: "destructive",
         description: `${error?.data?.message || "something went wrong!"}`
       });
-      console.error("login error", error);
     },
   });
 

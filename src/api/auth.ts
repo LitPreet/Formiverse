@@ -43,8 +43,8 @@ export const getCurrentUser = async (): Promise<User | undefined> => {
   try {
     const response = await axioss.get('/current-user');
     return response.data.data
-  } catch (error) {
-    console.error('error hai', error);
+  } catch (error:any) {
+   throw new Error(error)
   }
 };
 
@@ -75,12 +75,9 @@ export const getFormById = async (formId:string) => {
 export const getFormByIdForSubmit = async (formId:string) => {
   const id = formId
   try {
-    // const response = await axios.get(`https://form-app-backend-one.vercel.app/submit-formView/${id}`);
     const response = await axioss.get(`/submit-formView/${id}`);
-    console.log(response, `/submit-formView/${id}`)
     return response.data.data;
   } catch (error:any) {
-    console.error(error)
     throw new Error(error);
   }
 };

@@ -7,6 +7,11 @@ export default {
   ],
   theme: {
   	extend: {
+		backgroundImage: {
+			'custom-gradient-diagonal': 'linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)',
+			'custom-gradient': 'linear-gradient(to top, #dad4ec 0%, #dad4ec 1%, #f3e7e9 100%)',
+			'custom-gradient-black': 'linear-gradient(to top, #000000 0%, #434343 100%)',
+		  },	
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

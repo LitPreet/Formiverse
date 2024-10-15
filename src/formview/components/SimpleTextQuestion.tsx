@@ -75,7 +75,6 @@ const SimpleTextQuestion = ({
         description: "Question deleted successfully",
       })
     } catch (err) {
-      console.error(err);
       toast({
         variant: "destructive",
         description: "Something went wrong",

@@ -25,7 +25,6 @@ const Dashboard = () => {
         variant: "destructive",
         description: `${error?.data?.message || 'Something went wrong'}`,
       });
-      console.error("form creation error", error);
     },
   });
 

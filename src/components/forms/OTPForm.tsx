@@ -38,8 +38,6 @@ const OTPForm = () => {
         variant: "destructive",
         description: `${error?.data?.message}`,
       });
-      // Handle error, e.g., show an error message
-      console.error("Registration error", error);
     },
   });
 

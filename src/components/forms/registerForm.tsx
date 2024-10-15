@@ -46,7 +46,6 @@ export function RegisterForm() {
         variant: "destructive",
         description: `${error?.data?.message}`,
       });
-      console.error("Registration error", error?.data?.message);
     },
   });
 

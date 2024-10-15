@@ -117,8 +117,7 @@ const FormEdit = () => {
         description: "Question deleted successfully!",
       })
     },
-    onError: (error: any) => {
-      console.error("Error:", error);
+    onError: () => {
       toast({
         variant: "destructive",
         description: "Something went wrong while deleting Question!",
@@ -162,12 +161,11 @@ const FormEdit = () => {
         description: "Question added successfully",
       })
     },
-    onError: (error: any) => {
+    onError: () => {
       // Handle error, e.g., show an error message
       toast({
         description: "Something went wrong!",
       })
-      console.error("Error adding question", error);
     },
   });
 
@@ -184,7 +182,7 @@ const FormEdit = () => {
   }
 
   return (
-    <div className="max-w-7xl w-full  flex justify-center flex-col gap-5  items-center">
+    <div className="max-w-7xl w-full  flex justify-center flex-col gap-5   items-center">
       {isLoading ? (
         <ShimmerFormView />
       ) : (
