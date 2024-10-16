@@ -30,6 +30,9 @@ Explore the live project - https://formiverse.vercel.app/
 - Redux Js
 - Zod for Form validation
 - Next themes for theme management
+- PWA APIs
+- Service Workers
+- React Router v6
 - Vercel for deployment
 ## 🏁 Get Started
 To get this project up and running in your development environment, follow these step-by-step instructions.
