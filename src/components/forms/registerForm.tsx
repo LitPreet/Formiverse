@@ -163,6 +163,7 @@ export function RegisterForm() {
                     className="w-full border border-gray-400 text-black dark:text-gray-200"
                   />
                   <button
+                  name="eye"
                     type="button"
                     onClick={handleTogglePasswordVisibility}
                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-black dark:text-gray-200"
@@ -177,7 +178,7 @@ export function RegisterForm() {
         />
 
         {/* Submit Button */}
-        <Button type="submit" disabled={mutation.isLoading}>
+        <Button name="submitBtn" type="submit" disabled={mutation.isLoading}>
           {mutation.isLoading ? <Loading /> : "Submit"}
         </Button>
       </form>

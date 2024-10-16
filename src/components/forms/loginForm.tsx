@@ -147,6 +147,7 @@ const LoginForm = () => {
                   />
                   <button
                     type="button"
+                    name="eye"
                     onClick={handleTogglePasswordVisibility}
                     className="absolute right-2 top-1/2 transform -translate-y-1/2 dark:text-white text-black"
                   >
@@ -160,11 +161,12 @@ const LoginForm = () => {
         />
 
         {/* Submit Button */}
-        <Button type="submit" disabled={mutation.isLoading} className="w-full">
+        <Button name="submit" type="submit" disabled={mutation.isLoading} className="w-full">
           {mutation.isLoading ? <Loading /> : "Submit"}
         </Button>
         <p className="text-center dark:text-gray-300 text-gray-600">or</p>
         <Button
+        name="loginbtn"
           type="button"
           onClick={handleGuestLogin}
           disabled={mutation.isLoading}
@@ -176,7 +178,7 @@ const LoginForm = () => {
           Forgot your password?
           <span
             className="text-primary font-semibold mx-1 cursor-pointer"
-            onClick={() => navigate(path.forgotPassword)} // Replace with your actual path
+            onClick={() => navigate(path.forgotPassword)}
           >
             Reset it here
           </span>

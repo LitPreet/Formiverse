@@ -15,7 +15,7 @@ const Header = () => {
   return (
     <div className='z-10 shadow-md flex bg-transparent p-3 justify-between items-center dark:text-white text-gray-600 relative dark:bg-gray-700'>
     <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate(path.home)}>
-      <img src={Logo} className='w-10' alt='logo'/>
+      <img src={Logo} className='w-10 h-10 object-contain' fetchPriority='high' alt='logo'/>
       <h1 className='text-xl dark:text-white text-gray-600 font-bold'>Formiverse</h1>
     </div>
     <div className="flex items-center gap-3">

@@ -40,8 +40,8 @@ const Card = ({formData}:{formData:IForm}) => {
                 Created {timeAgo}
             </p>
             <div className="flex justify-between items-center my-3">
-                <Button onClick={() => navigate(`/form/${formData._id}`)}>Edit Form</Button>
-                <Button className='p-0 my-2 w-10 h-9' onClick={handleCopy} variant={"outline"}>
+                <Button name='edit' onClick={() => navigate(`/form/${formData._id}`)}>Edit Form</Button>
+                <Button name='copy' className='p-0 my-2 w-10 h-9' onClick={handleCopy} variant={"outline"}>
             {copy ? <ClipboardCheck className='text-sm' /> : <Copy className='text-sm' />}
           </Button>
             </div>
