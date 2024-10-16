@@ -11,14 +11,14 @@ export default defineConfig({
       name: 'Formiverse',
       short_name: 'formiverse',
       description: 'Create and manage forms effortlessly',
-      theme_color: '#ffffff',
+      theme_color: '#7248B9',
       background_color: '#ffffff',
       display: 'standalone',
       start_url: '/',
       icons: [
         {
-          src: '/formLogo.png',
-          sizes: '96x96',
+          src: '/google-forms.png',
+          sizes: '512x512',
           type: 'image/png',
         },
         {
@@ -39,6 +39,11 @@ export default defineConfig({
         {
           src: '/feedback.png',
           sizes: '512x512',
+          type: 'image/png',
+        },
+        {
+          src: '/formLogo.png',
+          sizes: '96x96',
           type: 'image/png',
         },
         {
