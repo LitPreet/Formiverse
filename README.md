@@ -7,6 +7,9 @@ Formiverse is a Google Forms-inspired application that allows users to create, e
 
 Explore the live project - https://formiverse.vercel.app/
 
+## 💡 Lighthouse Report
+<img src="https://github.com/LitPreet/Formiverse/blob/main/src/assets/images/load.png" alt="report"/>
+
 
 ## 🚀Key Features
 - Form Creation and Management: Users can create, edit, and share forms easily. They can send links via email or copy them for external sharing.
