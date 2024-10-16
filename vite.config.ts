@@ -20,7 +20,6 @@ export default defineConfig({
           src: '/formLogo.png',
           sizes: '96x96',
           type: 'image/png',
-          purpose: 'maskable'
         },
         {
           src: '/add.png',
