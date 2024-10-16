@@ -1,50 +1,76 @@
-# React + TypeScript + Vite
+# Formiverse
+<img src="https://github.com/LitPreet/Formiverse/blob/main/src/assets/images/form.png" alt="homepage" />
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+Formiverse is a Google Forms-inspired application that allows users to create, edit, and share dynamic forms via email or shareable links. Users can fill responses, while form owners can view, delete, and track responses in real-time. The app’s backend-driven UI dynamically renders form components based on API responses, ensuring flexibility and scalability. Formiverse is also a Progressive Web App (PWA), providing offline functionality and mobile compatibility for a seamless user experience.
+## 🌐Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Explore the live project - https://formiverse.vercel.app/
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 🚀Key Features
+- Form Creation and Management: Users can create, edit, and share forms easily. They can send links via email or copy them for external sharing.
 
-- Configure the top-level `parserOptions` property like this:
+- Real-Time Response Tracking: Form owners receive real-time updates on submissions and can delete unwanted responses directly.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Backend-Driven UI: The app’s UI is dynamically rendered based on the backend, ensuring a robust, flexible interface.
+
+- PWA: Formiverse is a fully-functional Progressive Web App (PWA) that users can download and use offline on mobile devices.
+
+
+
+## 🛠️Tech Stack
+- React.js 
+- Vite Bundler
+- TypeScript
+- Tailwind CSS
+- Mongodb
+- Node js
+- Shadcn UI for reusable components
+- Redux Js
+- Zod for Form validation
+- Next themes for theme management
+- Vercel for deployment
+## 🏁 Get Started
+To get this project up and running in your development environment, follow these step-by-step instructions.
+## 📝 Prerequisites
+In order to install and run this project locally, you would need to have the following installed on your local machine.
+- [Node js](https://nodejs.org/en/)
+- [NPM](https://docs.npmjs.com/getting-started)
+- [Git](https://git-scm.com/downloads)
+## ⚙️ Installation and Run Locally
+
+#### step 1
+Download or clone this repo by using the link below:
 ```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+https://github.com/LitPreet/Formiverse.git
 ```
+#### step 2
+Execute the following command in the root directory of the downloaded repo in order to install dependencies:
+```
+npm install
+```
+### step 3
+Execute the following command in order to run the development server locally:
+```
+npm run dev
+```
+### step 4
+Open http://localhost:5173 with your browser to see the result.
+## 📜 Scripts
+| Script       | Action         
+| ------------- |:-------------
+| ```npm install```      | Installs dependencies
+| ```npm run dev```      | Starts local dev server at ```localhost:3000  ```  
+| ```npm run build``` | Build your production site to ```./dist/```    
+| ```npm run start``` | Start your production site locally
+
+
+## 🚀 Deployment
+You can create an optimized production build with the following command:
+```
+npm run build
+```
+#### Deploy on Vercel
+The easiest way to deploy this Next.js app is to use the Vercel Platform.
+[Vercel Platform](https://vercel.com)
